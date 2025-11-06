@@ -9,7 +9,7 @@ using System.Threading.Tasks;
     {
         internal static class ConnectionConfig
         {
-            public const string ConnectionString = "Host=localhost;Port=5433;Username=postgres;Password=Pecm3563#;Database=dbpatrimonio";
+            public const string ConnectionString = "Host=localhost;Port=5432;Username=postgres;Password=senha23;Database=dbpatrimonio";
         }
     }
 
