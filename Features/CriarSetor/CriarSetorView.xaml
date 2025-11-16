@@ -1,0 +1,70 @@
+<Page
+    x:Class="patrimonioDB.Features.CriarSetor.CriarSetorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            Width="400" 
+            Spacing="20">
+
+            <!-- Título -->
+            <TextBlock 
+                Text="Criar Setor" 
+                FontSize="32" 
+                FontWeight="Bold" 
+                HorizontalAlignment="Center"
+                Margin="0,0,0,20"/>
+
+            <!-- Campo de Nome do setor -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Nome do Setor:" FontWeight="SemiBold"/>
+                <TextBox 
+                    x:Name="SetorTextBox"
+                    PlaceholderText="Nome"
+                    Height="40"/>
+            </StackPanel>
+
+            <!-- Mensagem de Erro -->
+            <TextBlock 
+                x:Name="MensagemErro"
+                Foreground="Red"
+                TextWrapping="Wrap"
+                HorizontalAlignment="Center"
+                Visibility="Collapsed"/>
+
+            <!-- Indicador de Loading -->
+            <ProgressRing 
+                x:Name="LoadingRing"
+                IsActive="False"
+                Visibility="Collapsed"
+                Width="40"
+                Height="40"
+                HorizontalAlignment="Center"/>
+
+            <!-- Botão de Criar setor -->
+            <Button 
+                x:Name="CriarSetorButton"
+                Content="Criar Setor" 
+                Click="CriarSetor_Click"
+                HorizontalAlignment="Stretch"
+                Height="40"
+                Style="{StaticResource AccentButtonStyle}"/>
+
+            <!-- Mensagem de Sucesso -->
+            <TextBlock 
+                x:Name="MensagemSucesso"
+                Foreground="Green"
+                TextWrapping="Wrap"
+                HorizontalAlignment="Center"
+                Visibility="Collapsed"/>
+
+        </StackPanel>
+    </Grid>
+</Page>
