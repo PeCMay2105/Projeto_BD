@@ -1,0 +1,125 @@
+<Page
+    x:Class="patrimonioDB.Features.CadastrarAdm.CadastroAdmView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<!-- Definição das linhas: Linha 0 para o botão voltar, Linha 1 para o resto -->
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<!-- BOTÃO VOLTAR (Fica fixo no topo) -->
+		<Button
+            x:Name="VoltarButton"
+            Grid.Row="0"
+            Click="Voltar_Click"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Margin="20,20,0,0"
+            Background="Transparent"
+            BorderThickness="0">
+			<StackPanel Orientation="Horizontal" Spacing="10">
+				<FontIcon Glyph="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+				<TextBlock Text="Voltar" VerticalAlignment="Center"/>
+			</StackPanel>
+		</Button>
+
+		<!-- ÁREA DE ROLAGEM DO FORMULÁRIO -->
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+			<StackPanel
+                Width="400"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Spacing="15"
+                Margin="20,0,20,50">
+
+				<!-- Título -->
+				<TextBlock
+                    Text="Cadastrar Administrador"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,20"/>
+
+				<!-- Campo: Nome -->
+				<TextBox
+                    x:Name="NomeTextBox"
+                    Header="Nome Completo"
+                    PlaceholderText="Digite o nome" />
+
+				<!-- Campo: CPF -->
+				<TextBox
+                    x:Name="CpfTextBox"
+                    Header="CPF"
+                    PlaceholderText="000.000.000-00"
+                    InputScope="Number" />
+
+				<!-- Campo: Data de Nascimento -->
+				<DatePicker
+                    x:Name="DataNascDatePicker"
+                    Header="Data de Nascimento"
+                    HorizontalAlignment="Stretch" />
+
+				<!-- Campo: Login -->
+				<TextBox
+                    x:Name="LoginTextBox"
+                    Header="Login (E-mail)"
+                    PlaceholderText="usuario@email.com"
+                    InputScope="EmailSmtpAddress" />
+
+				<!-- Campo: Senha -->
+				<PasswordBox
+                    x:Name="SenhaPasswordBox"
+                    Header="Senha"
+                    PlaceholderText="Mínimo 6 caracteres" />
+
+				<!-- Botão de Ação -->
+				<Button
+                    x:Name="CadastrarAdmButton"
+                    Content="Cadastrar"
+                    HorizontalAlignment="Stretch"
+                    Height="40"
+                    Click="CadastrarAdm_Click"
+                    Style="{StaticResource AccentButtonStyle}"
+                    Margin="0,10,0,0"/>
+
+				<!-- Indicador de Carregamento -->
+				<ProgressRing
+                    x:Name="LoadingRing"
+                    IsActive="False"
+                    Visibility="Collapsed"
+                    Width="40"
+                    Height="40"
+                    HorizontalAlignment="Center"/>
+
+				<!-- Mensagem de Sucesso -->
+				<TextBlock
+                    x:Name="MensagemSucesso"
+                    Foreground="Green"
+                    Visibility="Collapsed"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    HorizontalAlignment="Center"
+                    TextWrapping="Wrap"
+                    TextAlignment="Center" />
+
+				<!-- Mensagem de Erro -->
+				<TextBlock
+                    x:Name="MensagemErro"
+                    Foreground="Red"
+                    Visibility="Collapsed"
+                    FontSize="14"
+                    HorizontalAlignment="Center"
+                    TextWrapping="Wrap"
+                    TextAlignment="Center" />
+
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
+</Page>
