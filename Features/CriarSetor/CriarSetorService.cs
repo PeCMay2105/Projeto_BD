@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -20,6 +21,59 @@ namespace patrimonioDB.Features.CriarSetor
         public CriarSetorService()
         {
             _repository = new CriarSetorRepository();
+        }
+
+        public async Task DeletarSetorAsync(int id)
+        {
+            try
+            {
+                await _repository.DeletarSetorBDAsync(id);
+            }
+            catch (Npgsql.PostgresException ex)
+            {
+                // Código 23503 é violação de Foreign Key no Postgres
+                if (ex.SqlState == "23503")
+                {
+                    throw new ValidacaoSetorException("Não é possível excluir este setor pois existem itens ou funcionários vinculados a ele.");
+                }
+                throw; // Repassa outros erros
+            }
+        }
+
+        public async Task<List<Setor>> ObterSetoresDoBancoDeDadosAsync()
+        {
+            try
+            {
+                // Removemos o .Result e usamos await
+                List<Setor> setores = await _repository.buscarSetores();
+                return setores ?? new List<Setor>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERRO DE BANCO: {ex.Message}");
+                throw new Exception("Erro ao buscar setores.");
+            }
+        }
+        public async void atualizarSetor(int id, string novoNome)
+        {
+            // 1. Validação de entrada básica
+            if (string.IsNullOrWhiteSpace(novoNome))
+            {
+                throw new ValidacaoSetorException("O nome do setor não pode estar vazio.");
+            }
+            try
+            {
+                await _repository.AtualizarSetorBD(id, novoNome);
+                Debug.WriteLine($"Nome do setor alterado para {novoNome} com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                // Captura erros inesperados do banco de dados (ex: conexão falhou)
+                Debug.WriteLine($"ERRO DE BANCO: {ex.Message}");
+                // Lança uma exceção mais genérica para a UI
+                throw new Exception("Ocorreu um erro ao tentar realizar alteração    no banco de dados. Tente novamente.");
+            }
+            
         }
 
         /// <summary>

@@ -1,70 +1,126 @@
-<Page
-    x:Class="patrimonioDB.Features.CriarSetor.CriarSetorView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+<Page 
+    x:Class="patrimonioDB.Features.CriarSetor.CriarSetorView" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center" 
-            Width="400" 
-            Spacing="20">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel  
+                HorizontalAlignment="Center"  
+                VerticalAlignment="Center"  
+                Width="400"  
+                Spacing="15"
+                Margin="0,40,0,40">
 
-            <!-- Título -->
-            <TextBlock 
-                Text="Criar Setor" 
-                FontSize="32" 
-                FontWeight="Bold" 
-                HorizontalAlignment="Center"
-                Margin="0,0,0,20"/>
+                <TextBlock  
+                    Text="Gerenciar Setores"  
+                    FontSize="32"  
+                    FontWeight="Bold"  
+                    HorizontalAlignment="Center" 
+                    Margin="0,0,0,10"/>
 
-            <!-- Campo de Nome do setor -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="Nome do Setor:" FontWeight="SemiBold"/>
-                <TextBox 
-                    x:Name="SetorTextBox"
-                    PlaceholderText="Nome"
-                    Height="40"/>
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Nome do Setor:" FontWeight="SemiBold"/>
+                    <TextBox  
+                        x:Name="SetorTextBox" 
+                        PlaceholderText="Digite o nome do setor" 
+                        Height="40"/>
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock  
+                        x:Name="MensagemErro"  
+                        Foreground="Red" 
+                        TextWrapping="Wrap" 
+                        HorizontalAlignment="Center" 
+                        Visibility="Collapsed"
+                        Margin="0,0,0,10"/>
+
+                    <ProgressRing  
+                        x:Name="LoadingRing"  
+                        IsActive="False" 
+                        Visibility="Collapsed" 
+                        Width="40" 
+                        Height="40" 
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,10"/>
+
+                    <TextBlock  
+                        x:Name="MensagemSucesso"  
+                        Foreground="Green" 
+                        TextWrapping="Wrap" 
+                        HorizontalAlignment="Center" 
+                        Visibility="Collapsed"
+                        Margin="0,0,0,10"/>
+                </StackPanel>
+
+                <Grid>
+                    <Button  
+        x:Name="CriarSetorButton" 
+        Content="Criar Setor"  
+        Click="CriarSetor_Click" 
+        HorizontalAlignment="Stretch" 
+        Height="40" 
+        Style="{StaticResource AccentButtonStyle}"
+        Visibility="Visible"/>
+
+                    <Grid x:Name="BotoesEdicao" Visibility="Collapsed" ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button 
+            Grid.Column="0"
+            Content="Salvar" 
+            Click="SalvarEdicao_Click"
+            HorizontalAlignment="Stretch"
+            Style="{StaticResource AccentButtonStyle}"/>
+
+                        <Button 
+            Grid.Column="1"
+            Content="Excluir" 
+            Click="DeletarSetor_Click"
+            HorizontalAlignment="Stretch"
+            Background="DarkRed" 
+            Foreground="White"/>
+
+                        <Button 
+            Grid.Column="2"
+            Content="Cancelar" 
+            Click="CancelarEdicao_Click"
+            HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </Grid>
+
+                <MenuFlyoutSeparator Margin="0,10,0,10"/>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Setores Cadastrados (Selecione para editar):" FontWeight="SemiBold" Opacity="0.8"/>
+
+                    <ListView 
+                        x:Name="ListaSetores" 
+                        Height="200" 
+                        SelectionMode="Single"
+                        SelectionChanged="ListaSetores_SelectionChanged"
+                        BorderThickness="1"
+                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+                        CornerRadius="4">
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Nome}" VerticalAlignment="Center" Margin="5"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+
             </StackPanel>
-
-            <!-- Mensagem de Erro -->
-            <TextBlock 
-                x:Name="MensagemErro"
-                Foreground="Red"
-                TextWrapping="Wrap"
-                HorizontalAlignment="Center"
-                Visibility="Collapsed"/>
-
-            <!-- Indicador de Loading -->
-            <ProgressRing 
-                x:Name="LoadingRing"
-                IsActive="False"
-                Visibility="Collapsed"
-                Width="40"
-                Height="40"
-                HorizontalAlignment="Center"/>
-
-            <!-- Botão de Criar setor -->
-            <Button 
-                x:Name="CriarSetorButton"
-                Content="Criar Setor" 
-                Click="CriarSetor_Click"
-                HorizontalAlignment="Stretch"
-                Height="40"
-                Style="{StaticResource AccentButtonStyle}"/>
-
-            <!-- Mensagem de Sucesso -->
-            <TextBlock 
-                x:Name="MensagemSucesso"
-                Foreground="Green"
-                TextWrapping="Wrap"
-                HorizontalAlignment="Center"
-                Visibility="Collapsed"/>
-
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
