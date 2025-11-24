@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using patrimonioDB.Shared.Database;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace patrimonioDB.Features.CriarSetor
@@ -13,13 +14,67 @@ namespace patrimonioDB.Features.CriarSetor
         {
             using (var connection = DatabaseConnection.GetConnection())
             {
-                int id = 1;
-                string sql = "INSERT INTO Setor (ID, NOME, NUM_ITENS) VALUES (@Id, @Nome, 0)";
+                string sql = "INSERT INTO Setor (NOME, NUM_ITENS) VALUES (@Nome, 0)";
 
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@Nome", nome);
-                    command.Parameters.AddWithValue("@Id", 2);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        public async Task DeletarSetorBDAsync(int id)
+        {
+            using (var connection = DatabaseConnection.GetConnection())
+            {
+                string sql = "DELETE FROM Setor WHERE ID = @id";
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        public async Task<List<Setor>> buscarSetores()
+        {
+            using (var connection = DatabaseConnection.GetConnection())
+            {
+                string sql = "SELECT ID, NOME, NUM_ITENS FROM Setor";
+                var setores = new List<Setor>();
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var setor = new Setor
+                            {
+                                Id = reader.GetInt32(0),
+                                Nome = reader.GetString(1),
+                                num_itens = reader.GetInt32(2)
+                            };
+                            setores.Add(setor);
+                        }
+                    }
+                }
+                return setores;
+            }
+        }
+
+        public async Task AtualizarSetorBD(int id, string novoNome)
+        {
+            using (var connection = DatabaseConnection.GetConnection())
+            {
+                string sql = "UPDATE Setor SET NOME = @novoNome WHERE Setor.ID = @id";
+
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@novoNome", novoNome);
+                    command.Parameters.AddWithValue("@id", id);
 
                     await command.ExecuteNonQueryAsync();
                 }
