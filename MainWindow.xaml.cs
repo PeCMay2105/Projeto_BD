@@ -26,10 +26,9 @@ namespace patrimonioDB
         public MainWindow()
         {
             InitializeComponent();
-            //var loginView = new Features.Login.LoginView();
-            //this.Content = loginView;
-            var setorView = new Features.CriarSetor.CriarSetorView();
-            this.Content = setorView;
+            var frame = new Frame();
+            frame.Navigate(typeof(Features.Home.HomeView));
+            this.Content = frame;
         }
     }
 }
