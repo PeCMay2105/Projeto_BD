@@ -17,6 +17,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         public int Quantidade { get; set; }
         public string Descricao { get; set; }
         public double ValorUnitario { get; set; }
+        public string NomeSetor { get; set; }
 
         public double ValorTotal => Quantidade * ValorUnitario;
         public bool EstaAtivo => DataRemocao == null;

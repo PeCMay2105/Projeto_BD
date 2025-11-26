@@ -41,6 +41,11 @@
     <PackageReference Include="Npgsql" Version="9.0.4" />
     <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="Features\GestaoPatrimonio\GestaoPatrimonioView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
 
   <!--
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
