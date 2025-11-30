@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using patrimonioDB.Features.CriarSetor;
+using patrimonioDB.Classes;
 
 namespace patrimonioDB.Features.GestaoPatrimonio
 {

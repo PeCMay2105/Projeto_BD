@@ -47,19 +47,39 @@ namespace patrimonioDB.Features.Login
             try
             {
                 var loginService = new LoginService();
+                bool isAdmin = LoginAdminCheckBox.IsChecked == true;
 
-                // ✅ REMOVA o Task.Run - execute direto na UI thread
-                var usuario = loginService.Autenticar(EmailTextBox.Text, SenhaPasswordBox.Password);
-
-                if (usuario != null)
+                if (isAdmin)
                 {
-                    MostrarSucesso($"Login realizado com sucesso!\n\nBem-vindo, {usuario.Nome}!");
+                    // Login como Administrador
+                    var administrador = loginService.AutenticarAdministrador(EmailTextBox.Text, SenhaPasswordBox.Password);
 
-                    // TODO: Navegar para a próxima tela
+                    if (administrador != null)
+                    {
+                        MostrarSucesso($"Login de Administrador realizado com sucesso!\n\nBem-vindo, {administrador.Nome}!");
+
+                        // TODO: Navegar para a tela de administrador
+                    }
+                    else
+                    {
+                        MostrarErro("Login ou senha incorretos para Administrador.");
+                    }
                 }
                 else
                 {
-                    MostrarErro("Login ou senha incorretos.");
+                    // Login como Funcionário
+                    var usuario = loginService.Autenticar(EmailTextBox.Text, SenhaPasswordBox.Password);
+
+                    if (usuario != null)
+                    {
+                        MostrarSucesso($"Login realizado com sucesso!\n\nBem-vindo, {usuario.Nome}!");
+
+                        // TODO: Navegar para a tela de funcionário
+                    }
+                    else
+                    {
+                        MostrarErro("Login ou senha incorretos.");
+                    }
                 }
             }
             catch (Exception ex)

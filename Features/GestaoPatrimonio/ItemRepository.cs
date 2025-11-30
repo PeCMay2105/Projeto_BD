@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Npgsql;
-using patrimonioDB.Features.CriarSetor;
+using patrimonioDB.Classes;
 using patrimonioDB.Shared.Database;
 
 namespace patrimonioDB.Features.GestaoPatrimonio

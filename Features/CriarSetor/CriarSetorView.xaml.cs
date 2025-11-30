@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using patrimonioDB.Features.CriarSetor; // Importa o Service e a Exceção
+using patrimonioDB.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

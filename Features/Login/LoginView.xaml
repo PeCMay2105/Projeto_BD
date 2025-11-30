@@ -12,7 +12,7 @@
         <Button 
             x:Name="VoltarButton"
  Content="← Voltar"
-Click="VoltarButton_Click"
+            Click="VoltarButton_Click"
             HorizontalAlignment="Left"
          VerticalAlignment="Top"
          Margin="20"
@@ -32,6 +32,15 @@ Click="VoltarButton_Click"
                 FontWeight="Bold" 
                 HorizontalAlignment="Center"
                 Margin="0,0,0,20"/>
+
+            <!-- Tipo de Usuário -->
+    <StackPanel Spacing="8">
+       <TextBlock Text="Tipo de Usuário:" FontWeight="SemiBold"/>
+      <CheckBox 
+            x:Name="LoginAdminCheckBox"
+     Content="Entrar como Administrador"
+         IsChecked="False"/>
+        </StackPanel>
 
             <!-- Campo de Email -->
             <StackPanel Spacing="8">

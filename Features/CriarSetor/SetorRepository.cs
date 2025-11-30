@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using patrimonioDB.Classes;
 using patrimonioDB.Shared.Database;
 using System.Collections.Generic;
 using System.Threading.Tasks;

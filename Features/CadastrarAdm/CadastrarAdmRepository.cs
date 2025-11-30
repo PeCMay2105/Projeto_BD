@@ -3,7 +3,7 @@ using patrimonioDB.Shared.Database;
 using System.Threading.Tasks;
 using System;
 using System.Data;
-using patrimonioDB.Features.Cadastro;
+using patrimonioDB.Classes;
 
 namespace patrimonioDB.Features.CadastrarAdm
 {

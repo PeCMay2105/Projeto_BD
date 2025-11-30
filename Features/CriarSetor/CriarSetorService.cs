@@ -1,4 +1,5 @@
-﻿using System;
+﻿using patrimonioDB.Classes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
