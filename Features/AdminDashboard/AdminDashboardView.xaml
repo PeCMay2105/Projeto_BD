@@ -25,7 +25,8 @@
        <TextBlock 
             Text="Painel do Administrador" 
   FontSize="28" 
-    FontWeight="Bold"/>
+    FontWeight="Bold"
+			/>
       <TextBlock 
           x:Name="NomeAdminTextBlock"
       Text="Bem-vindo, Administrador!" 
