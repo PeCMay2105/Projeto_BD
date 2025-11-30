@@ -15,6 +15,14 @@ namespace patrimonioDB.Features.Login
             this.InitializeComponent();
         }
 
+        private void VoltarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
         private async void EntrarButton_Click(object sender, RoutedEventArgs e)
         {
             MensagemErro.Visibility = Visibility.Collapsed;

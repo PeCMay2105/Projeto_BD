@@ -8,10 +8,21 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <!-- Botão de Voltar -->
+        <Button 
+            x:Name="VoltarButton"
+ Content="← Voltar"
+Click="VoltarButton_Click"
+            HorizontalAlignment="Left"
+         VerticalAlignment="Top"
+         Margin="20"
+            Background="Transparent"
+            BorderThickness="0"/>
+
         <StackPanel 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center" 
-            Width="400" 
+         HorizontalAlignment="Center" 
+     VerticalAlignment="Center" 
+    Width="400" 
             Spacing="20">
             
             <!-- Título -->
