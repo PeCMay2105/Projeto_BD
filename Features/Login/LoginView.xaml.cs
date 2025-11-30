@@ -58,7 +58,11 @@ namespace patrimonioDB.Features.Login
                     {
                         MostrarSucesso($"Login de Administrador realizado com sucesso!\n\nBem-vindo, {administrador.Nome}!");
 
-                        // TODO: Navegar para a tela de administrador
+                        // Aguarda 1.5 segundos para o usuário ver a mensagem
+                        await Task.Delay(1500);
+
+                        // Navega para o Painel do Administrador
+                        Frame.Navigate(typeof(patrimonioDB.Features.AdminDashboard.AdminDashboardView));
                     }
                     else
                     {
@@ -74,7 +78,11 @@ namespace patrimonioDB.Features.Login
                     {
                         MostrarSucesso($"Login realizado com sucesso!\n\nBem-vindo, {usuario.Nome}!");
 
-                        // TODO: Navegar para a tela de funcionário
+                        // Aguarda 1.5 segundos para o usuário ver a mensagem
+                        await Task.Delay(1500);
+
+                        // Navega para a tela Home
+                        Frame.Navigate(typeof(patrimonioDB.Features.Home.HomeView));
                     }
                     else
                     {

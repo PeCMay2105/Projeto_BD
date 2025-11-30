@@ -1,0 +1,157 @@
+<Page
+    x:Class="patrimonioDB.Features.AdminDashboard.AdminDashboardView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+         <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="*"/>
+    <ColumnDefinition Width="Auto"/>
+     </Grid.ColumnDefinitions>
+
+       <!-- Título -->
+  <StackPanel Grid.Column="0" VerticalAlignment="Center">
+       <TextBlock 
+            Text="Painel do Administrador" 
+  FontSize="28" 
+    FontWeight="Bold"/>
+      <TextBlock 
+          x:Name="NomeAdminTextBlock"
+      Text="Bem-vindo, Administrador!" 
+           FontSize="14" 
+    Foreground="Gray"
+  Margin="0,5,0,0"/>
+     </StackPanel>
+
+       <!-- Botão Logout -->
+       <Button 
+           Grid.Column="1"
+                x:Name="LogoutButton"
+    Content="Sair"
+       Click="LogoutButton_Click"
+        VerticalAlignment="Center"
+  Background="Transparent"
+         BorderBrush="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+         BorderThickness="1"/>
+        </Grid>
+
+     <!-- Menu Principal com Cards -->
+<ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="20" MaxWidth="800">
+
+   <!-- Card: Gestão de Funcionários -->
+      <Border 
+          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+   BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+       BorderThickness="1"
+            CornerRadius="8"
+             Padding="20">
+          <StackPanel Spacing="15">
+           <TextBlock 
+  Text="Gestão de Funcionários" 
+          FontSize="20" 
+                FontWeight="SemiBold"/>
+         <TextBlock 
+           Text="Gerencie todos os funcionários cadastrados no sistema"
+        TextWrapping="Wrap"
+Foreground="Gray"/>
+                 
+    <Grid ColumnSpacing="10">
+      <Grid.ColumnDefinitions>
+             <ColumnDefinition Width="*"/>
+       <ColumnDefinition Width="*"/>
+   <ColumnDefinition Width="*"/>
+   </Grid.ColumnDefinitions>
+
+        <Button 
+     Grid.Column="0"
+       x:Name="CadastrarFuncionarioButton"
+       Content="Cadastrar"
+ Click="CadastrarFuncionarioButton_Click"
+               HorizontalAlignment="Stretch"
+        Style="{StaticResource AccentButtonStyle}"/>
+
+<Button 
+Grid.Column="1"
+   x:Name="EditarFuncionarioButton"
+                Content="Editar"
+         Click="EditarFuncionarioButton_Click"
+       HorizontalAlignment="Stretch"/>
+
+ <Button 
+    Grid.Column="2"
+        x:Name="RemoverFuncionarioButton"
+              Content="Remover"
+       Click="RemoverFuncionarioButton_Click"
+         HorizontalAlignment="Stretch"/>
+        </Grid>
+ </StackPanel>
+                </Border>
+
+           <!-- Card: Gestão de Patrimônio -->
+        <Border 
+         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+        BorderThickness="1"
+             CornerRadius="8"
+    Padding="20">
+     <StackPanel Spacing="15">
+  <TextBlock 
+     Text="Gestão de Patrimônio" 
+       FontSize="20" 
+             FontWeight="SemiBold"/>
+       <TextBlock 
+      Text="Gerencie itens, setores e movimentações"
+       TextWrapping="Wrap"
+               Foreground="Gray"/>
+          
+  <Button 
+       x:Name="GestaoPatrimonioButton"
+ Content="Acessar Gestão de Patrimônio"
+              Click="GestaoPatrimonioButton_Click"
+           HorizontalAlignment="Stretch"
+         Style="{StaticResource AccentButtonStyle}"/>
+       </StackPanel>
+       </Border>
+
+            <!-- Card: Gestão de Setores -->
+                <Border 
+ Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+   BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+ BorderThickness="1"
+          CornerRadius="8"
+     Padding="20">
+          <StackPanel Spacing="15">
+  <TextBlock 
+        Text="Gestão de Setores" 
+        FontSize="20" 
+          FontWeight="SemiBold"/>
+   <TextBlock 
+         Text="Crie, edite e organize os setores da empresa"
+            TextWrapping="Wrap"
+               Foreground="Gray"/>
+               
+   <Button 
+         x:Name="GestaoSetoresButton"
+            Content="Acessar Gestão de Setores"
+     Click="GestaoSetoresButton_Click"
+    HorizontalAlignment="Stretch"
+         Style="{StaticResource AccentButtonStyle}"/>
+    </StackPanel>
+                </Border>
+
+      </StackPanel>
+   </ScrollViewer>
+    </Grid>
+</Page>

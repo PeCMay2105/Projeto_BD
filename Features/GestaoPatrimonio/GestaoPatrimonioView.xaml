@@ -13,13 +13,32 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Título -->
-        <TextBlock 
-            Grid.Row="0"
-            Text="Gestão de Patrimônio" 
-            FontSize="28" 
-            FontWeight="Bold" 
-            Margin="0,0,0,20"/>
+        <!-- Cabeçalho com Título e Botão Logout -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Título -->
+            <TextBlock 
+                Grid.Column="0"
+                Text="Gestão de Patrimônio" 
+                FontSize="28" 
+                FontWeight="Bold" 
+                VerticalAlignment="Center"/>
+
+            <!-- Botão Logout -->
+            <Button 
+                Grid.Column="1"
+                x:Name="LogoutButton"
+                Content="🚪 Sair"
+                Click="LogoutButton_Click"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                BorderBrush="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                BorderThickness="1"/>
+        </Grid>
 
         <!-- TabView com 3 abas -->
         <TabView Grid.Row="1" x:Name="MainTabView">

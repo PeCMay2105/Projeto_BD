@@ -12,6 +12,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Features\AdminDashboard\AdminDashboardView.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -43,6 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Features\GestaoPatrimonio\GestaoPatrimonioView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\GestaoFuncionarios\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Features\AdminDashboard\AdminDashboardView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

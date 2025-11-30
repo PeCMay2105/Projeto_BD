@@ -10,6 +10,7 @@ namespace patrimonioDB.Classes
     {
         public int Id_funcao { get; set; }
         public int SetorId { get; set; }
+        public string Cargo { get; set; } = string.Empty;
         public double Salario { get; set; }
         public DateTime DataAdmissao { get; set; }
     }

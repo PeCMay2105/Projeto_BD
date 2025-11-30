@@ -25,6 +25,15 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
+        /// Botão Logout - Retorna para a tela Home
+        /// </summary>
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Navega de volta para a tela Home
+            Frame.Navigate(typeof(patrimonioDB.Features.Home.HomeView));
+        }
+
+        /// <summary>
         /// Chamado quando a página é carregada
         /// Carrega setores e itens iniciais
         /// </summary>
