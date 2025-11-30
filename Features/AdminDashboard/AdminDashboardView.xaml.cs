@@ -15,7 +15,7 @@ namespace patrimonioDB.Features.AdminDashboard
         /// </summary>
         public void SetAdministradorNome(string nome)
         {
-            // NomeAdminTextBlock.Text = $"Bem-vindo, {nome}!";
+            NomeAdminTextBlock.Text = $"Bem-vindo, {nome}!";
         }
 
         /// <summary>
@@ -31,15 +31,7 @@ namespace patrimonioDB.Features.AdminDashboard
    /// </summary>
         private void CadastrarFuncionarioButton_Click(object sender, RoutedEventArgs e)
  {
-        // TODO: Criar tela de cadastro
-            var dialog = new ContentDialog
-      {
-     Title = "Em Desenvolvimento",
-                Content = "A tela de cadastro de funcionários será implementada em breve.",
-            CloseButtonText = "OK",
-     XamlRoot = this.XamlRoot
-   };
-            _ = dialog.ShowAsync();
+        Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.CadastrarFuncionarioView));
         }
 
   /// <summary>
@@ -47,32 +39,16 @@ namespace patrimonioDB.Features.AdminDashboard
       /// </summary>
         private void EditarFuncionarioButton_Click(object sender, RoutedEventArgs e)
      {
-  // TODO: Criar tela de edição
-      var dialog = new ContentDialog
-            {
-   Title = "Em Desenvolvimento",
- Content = "A tela de edição de funcionários será implementada em breve.",
-  CloseButtonText = "OK",
-  XamlRoot = this.XamlRoot
-      };
-    _ = dialog.ShowAsync();
-      }
+      Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.GestaoFuncionariosView));
+        }
 
         /// <summary>
         /// Navega para a tela de Remover Funcionário
      /// </summary>
         private void RemoverFuncionarioButton_Click(object sender, RoutedEventArgs e)
         {
-    // TODO: Criar tela de remoção
-     var dialog = new ContentDialog
-      {
-       Title = "Em Desenvolvimento",
-                Content = "A tela de remoção de funcionários será implementada em breve.",
- CloseButtonText = "OK",
-      XamlRoot = this.XamlRoot
-    };
-        _ = dialog.ShowAsync();
-      }
+   Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.GestaoFuncionariosView));
+        }
 
     /// <summary>
     /// Navega para a Gestão de Patrimônio
@@ -87,7 +63,7 @@ namespace patrimonioDB.Features.AdminDashboard
         /// </summary>
     private void GestaoSetoresButton_Click(object sender, RoutedEventArgs e)
         {
-         Frame.Navigate(typeof(patrimonioDB.Features.CriarSetor.CriarSetorView));
+    Frame.Navigate(typeof(patrimonioDB.Features.CriarSetor.CriarSetorView));
         }
     }
 }

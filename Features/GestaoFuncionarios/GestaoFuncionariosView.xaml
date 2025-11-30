@@ -1,0 +1,146 @@
+<Page
+    x:Class="patrimonioDB.Features.GestaoFuncionarios.GestaoFuncionariosView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Grid Padding="20">
+<Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+     <RowDefinition Height="*"/>
+   </Grid.RowDefinitions>
+
+        <!-- Cabecalho -->
+     <StackPanel Grid.Row="0" Margin="0,0,0,20">
+         <Button 
+x:Name="VoltarButton"
+     Content="Voltar"
+  Click="VoltarButton_Click"
+Background="Transparent"
+BorderThickness="0"
+HorizontalAlignment="Left"
+         Margin="0,0,0,10"/>
+ 
+  <TextBlock 
+  Text="Gestao de Funcionarios" 
+       FontSize="28" 
+        FontWeight="Bold"/>
+
+         <!-- Mensagens -->
+  <TextBlock 
+  x:Name="MensagemErro"
+  Foreground="Red"
+     TextWrapping="Wrap"
+      Margin="0,10,0,0"
+   Visibility="Collapsed"/>
+
+    <TextBlock 
+    x:Name="MensagemSucesso"
+ Foreground="Green"
+     TextWrapping="Wrap"
+   Margin="0,10,0,0"
+  Visibility="Collapsed"/>
+  </StackPanel>
+
+        <!-- Conteudo -->
+    <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+       <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+     <RowDefinition Height="*"/>
+           <RowDefinition Height="Auto"/>
+  </Grid.RowDefinitions>
+
+      <!-- Barra de busca -->
+    <TextBox 
+  Grid.Row="0"
+         x:Name="BuscarTextBox"
+PlaceholderText="Buscar por nome ou CPF..."
+TextChanged="BuscarTextBox_TextChanged"
+Margin="0,0,0,10"/>
+
+            <!-- Painel de Confirmacao de Exclusao -->
+        <Border 
+    Grid.Row="1"
+  x:Name="ConfirmacaoExclusaoPanel"
+        Background="{ThemeResource SystemFillColorCriticalBackgroundBrush}"
+    BorderBrush="Red"
+       BorderThickness="2"
+      CornerRadius="8"
+    Padding="15"
+            Margin="0,0,0,10"
+         Visibility="Collapsed">
+       <StackPanel Spacing="10">
+<TextBlock 
+  Text="Confirmar Exclusao"
+        FontSize="18"
+    FontWeight="Bold"
+        Foreground="Red"/>
+    
+     <TextBlock TextWrapping="Wrap">
+      <Run Text="Tem certeza que deseja excluir o funcionario:"/>
+       <LineBreak/>
+<Run x:Name="FuncionarioSelecionado" FontWeight="Bold"/>
+      <LineBreak/>
+      <Run Text="Esta acao nao pode ser desfeita!"/>
+     </TextBlock>
+
+       <!-- Tag invisivel para guardar o funcionario -->
+         <TextBlock x:Name="FuncionarioParaExcluir" Visibility="Collapsed"/>
+
+   <StackPanel Orientation="Horizontal" Spacing="10">
+  <Button 
+   x:Name="ConfirmarExclusaoButton"
+      Content="Confirmar Exclusao"
+     Click="ConfirmarExclusaoButton_Click"
+  Background="Red"/>
+           <Button 
+       x:Name="CancelarExclusaoButton"
+Content="Cancelar"
+      Click="CancelarExclusaoButton_Click"/>
+       </StackPanel>
+     </StackPanel>
+     </Border>
+
+            <!-- Lista de Funcionarios -->
+  <ScrollViewer Grid.Row="2">
+      <StackPanel x:Name="FuncionariosPanel" Spacing="10">
+    <!-- Funcionarios serao adicionados aqui dinamicamente -->
+      </StackPanel>
+ </ScrollViewer>
+
+    <!-- Botao Cadastrar Novo -->
+<Button 
+Grid.Row="3"
+     x:Name="CadastrarNovoButton"
+   Content="Cadastrar Novo Funcionario"
+      Click="CadastrarNovoButton_Click"
+HorizontalAlignment="Stretch"
+    Height="50"
+     Margin="0,10,0,0"
+          Style="{StaticResource AccentButtonStyle}"/>
+    </Grid>
+
+        <!-- Loading Overlay -->
+      <Grid x:Name="LoadingOverlay" 
+Background="#80000000" 
+       Visibility="Collapsed">
+       <StackPanel 
+   HorizontalAlignment="Center" 
+     VerticalAlignment="Center">
+    <ProgressRing 
+    IsActive="True" 
+  Width="60" 
+     Height="60"/>
+       <TextBlock 
+          Text="Carregando..." 
+        Foreground="White" 
+                  Margin="0,10,0,0"
+         HorizontalAlignment="Center"/>
+</StackPanel>
+        </Grid>
+    </Grid>
+</Page>
