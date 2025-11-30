@@ -7,120 +7,130 @@
     mc:Ignorable="d" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel  
-                HorizontalAlignment="Center"  
-                VerticalAlignment="Center"  
-                Width="400"  
-                Spacing="15"
-                Margin="0,40,0,40">
+    <Grid Padding="20">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+ <StackPanel  
+     HorizontalAlignment="Center"  
+             VerticalAlignment="Center"  
+   Width="400"  
+        Spacing="15"
+       Margin="0,20,0,40">
 
-                <TextBlock  
-                    Text="Gerenciar Setores"  
-                    FontSize="32"  
-                    FontWeight="Bold"  
-                    HorizontalAlignment="Center" 
-                    Margin="0,0,0,10"/>
+   <!-- Botao Voltar -->
+<Button 
+         x:Name="VoltarButton"
+ Content="Voltar"
+     Click="VoltarButton_Click"
+        Background="Transparent"
+    BorderThickness="0"
+   HorizontalAlignment="Left"
+               Margin="0,0,0,10"/>
 
-                <StackPanel Spacing="8">
-                    <TextBlock Text="Nome do Setor:" FontWeight="SemiBold"/>
-                    <TextBox  
-                        x:Name="SetorTextBox" 
-                        PlaceholderText="Digite o nome do setor" 
-                        Height="40"/>
-                </StackPanel>
+    <TextBlock  
+             Text="Gerenciar Setores"  
+        FontSize="32"  
+        FontWeight="Bold"  
+           HorizontalAlignment="Center" 
+      Margin="0,0,0,10"/>
 
-                <StackPanel>
-                    <TextBlock  
-                        x:Name="MensagemErro"  
-                        Foreground="Red" 
-                        TextWrapping="Wrap" 
-                        HorizontalAlignment="Center" 
-                        Visibility="Collapsed"
-                        Margin="0,0,0,10"/>
+<StackPanel Spacing="8">
+    <TextBlock Text="Nome do Setor:" FontWeight="SemiBold"/>
+        <TextBox  
+         x:Name="SetorTextBox" 
+  PlaceholderText="Digite o nome do setor" 
+    Height="40"/>
+    </StackPanel>
 
-                    <ProgressRing  
-                        x:Name="LoadingRing"  
-                        IsActive="False" 
-                        Visibility="Collapsed" 
-                        Width="40" 
-                        Height="40" 
-                        HorizontalAlignment="Center"
-                        Margin="0,0,0,10"/>
+   <StackPanel>
+      <TextBlock  
+          x:Name="MensagemErro"  
+          Foreground="Red" 
+   TextWrapping="Wrap" 
+         HorizontalAlignment="Center" 
+               Visibility="Collapsed"
+         Margin="0,0,0,10"/>
 
-                    <TextBlock  
-                        x:Name="MensagemSucesso"  
-                        Foreground="Green" 
-                        TextWrapping="Wrap" 
-                        HorizontalAlignment="Center" 
-                        Visibility="Collapsed"
-                        Margin="0,0,0,10"/>
-                </StackPanel>
+    <ProgressRing  
+         x:Name="LoadingRing"  
+        IsActive="False" 
+                Visibility="Collapsed" 
+     Width="40" 
+              Height="40" 
+           HorizontalAlignment="Center"
+      Margin="0,0,0,10"/>
 
-                <Grid>
-                    <Button  
+    <TextBlock  
+        x:Name="MensagemSucesso"  
+            Foreground="Green" 
+   TextWrapping="Wrap" 
+       HorizontalAlignment="Center" 
+         Visibility="Collapsed"
+     Margin="0,0,0,10"/>
+            </StackPanel>
+
+       <Grid>
+          <Button  
         x:Name="CriarSetorButton" 
         Content="Criar Setor"  
         Click="CriarSetor_Click" 
-        HorizontalAlignment="Stretch" 
-        Height="40" 
-        Style="{StaticResource AccentButtonStyle}"
+    HorizontalAlignment="Stretch" 
+      Height="40" 
+      Style="{StaticResource AccentButtonStyle}"
         Visibility="Visible"/>
 
-                    <Grid x:Name="BotoesEdicao" Visibility="Collapsed" ColumnSpacing="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+       <Grid x:Name="BotoesEdicao" Visibility="Collapsed" ColumnSpacing="10">
+       <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
 
-                        <Button 
-            Grid.Column="0"
-            Content="Salvar" 
-            Click="SalvarEdicao_Click"
+             <Button 
+         Grid.Column="0"
+      Content="Salvar" 
+  Click="SalvarEdicao_Click"
             HorizontalAlignment="Stretch"
-            Style="{StaticResource AccentButtonStyle}"/>
+       Style="{StaticResource AccentButtonStyle}"/>
 
-                        <Button 
-            Grid.Column="1"
-            Content="Excluir" 
-            Click="DeletarSetor_Click"
+   <Button 
+     Grid.Column="1"
+Content="Excluir" 
+ Click="DeletarSetor_Click"
             HorizontalAlignment="Stretch"
             Background="DarkRed" 
-            Foreground="White"/>
+    Foreground="White"/>
 
-                        <Button 
-            Grid.Column="2"
+      <Button 
+        Grid.Column="2"
             Content="Cancelar" 
             Click="CancelarEdicao_Click"
-            HorizontalAlignment="Stretch"/>
-                    </Grid>
-                </Grid>
+   HorizontalAlignment="Stretch"/>
+       </Grid>
+    </Grid>
 
-                <MenuFlyoutSeparator Margin="0,10,0,10"/>
+              <MenuFlyoutSeparator Margin="0,10,0,10"/>
 
                 <StackPanel Spacing="8">
-                    <TextBlock Text="Setores Cadastrados (Selecione para editar):" FontWeight="SemiBold" Opacity="0.8"/>
+     <TextBlock Text="Setores Cadastrados (Selecione para editar):" FontWeight="SemiBold" Opacity="0.8"/>
 
-                    <ListView 
-                        x:Name="ListaSetores" 
-                        Height="200" 
-                        SelectionMode="Single"
-                        SelectionChanged="ListaSetores_SelectionChanged"
-                        BorderThickness="1"
-                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                        CornerRadius="4">
+      <ListView 
+        x:Name="ListaSetores" 
+   Height="200" 
+        SelectionMode="Single"
+        SelectionChanged="ListaSetores_SelectionChanged"
+             BorderThickness="1"
+       BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+    CornerRadius="4">
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Nome}" VerticalAlignment="Center" Margin="5"/>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackPanel>
+   <ListView.ItemTemplate>
+   <DataTemplate>
+         <TextBlock Text="{Binding Nome}" VerticalAlignment="Center" Margin="5"/>
+    </DataTemplate>
+    </ListView.ItemTemplate>
+    </ListView>
+   </StackPanel>
 
-            </StackPanel>
+   </StackPanel>
         </ScrollViewer>
     </Grid>
 </Page>

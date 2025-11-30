@@ -25,6 +25,17 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
+        /// Botao Voltar - Retorna para a tela anterior
+        /// </summary>
+        private void VoltarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
+        /// <summary>
         /// Botão Logout - Retorna para a tela Home
         /// </summary>
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
@@ -34,7 +45,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
-        /// Chamado quando a página é carregada
+        /// Chamado quando a pagina e carregada
         /// Carrega setores e itens iniciais
         /// </summary>
         private async void GestaoPatrimonioView_Loaded(object sender, RoutedEventArgs e)
@@ -59,7 +70,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
-        /// Carrega todos os itens ativos (não removidos)
+        /// Carrega todos os itens ativos (nao removidos)
         /// </summary>
         private async System.Threading.Tasks.Task CarregarItensAtivosAsync()
         {
@@ -71,7 +82,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         // ========== ABA 1: ADICIONAR ITEM ==========
 
         /// <summary>
-        /// Botão Adicionar Item clicado
+        /// Botao Adicionar Item clicado
         /// </summary>
         private async void AdicionarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -163,7 +174,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         // ========== ABA 2: MOVER ITEM ==========
 
         /// <summary>
-        /// Quando um item é selecionado para mover
+        /// Quando um item e selecionado para mover
         /// </summary>
         private void ItensMoverListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -198,7 +209,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
-        /// Botão Mover Item clicado
+        /// Botao Mover Item clicado
         /// </summary>
         private async void MoverButton_Click(object sender, RoutedEventArgs e)
         {
@@ -273,7 +284,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         // ========== ABA 3: REMOVER ITEM ==========
 
         /// <summary>
-        /// Quando um item é selecionado para remover
+        /// Quando um item e selecionado para remover
         /// </summary>
         private void ItensRemoverListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -306,7 +317,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
-        /// Botão Remover Item clicado
+        /// Botao Remover Item clicado
         /// </summary>
         private async void RemoverButton_Click(object sender, RoutedEventArgs e)
         {

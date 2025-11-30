@@ -31,6 +31,14 @@ namespace patrimonioDB.Features.CriarSetor
             CarregarSetores();
         }
 
+        private void VoltarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
         // 2. CORREÇÃO: Mudei para 'async void' para não travar a tela
         private async void CarregarSetores()
         {
@@ -176,7 +184,7 @@ namespace patrimonioDB.Features.CriarSetor
             MensagemErro.Visibility = Visibility.Collapsed;
         }
     
-    private async void DeletarSetor_Click(object sender, RoutedEventArgs e)
+        private async void DeletarSetor_Click(object sender, RoutedEventArgs e)
         {
             if (_setorEmEdicao == null) return;
 
