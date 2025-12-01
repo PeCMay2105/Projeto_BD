@@ -1,0 +1,154 @@
+<Page
+    x:Class="patrimonioDB.Features.GestaoFuncionarios.EditarFuncionarioView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+     <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecalho -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <Button 
+     x:Name="VoltarButton"
+     Content="Voltar"
+          Click="VoltarButton_Click"
+            Background="Transparent"
+     BorderThickness="0"
+        HorizontalAlignment="Left"
+             Margin="0,0,0,10"/>
+   
+            <TextBlock 
+     Text="Editar Funcionario" 
+     FontSize="28" 
+   FontWeight="Bold"/>
+
+            <!-- Mensagens -->
+            <TextBlock 
+        x:Name="MensagemErro"
+         Foreground="Red"
+           TextWrapping="Wrap"
+           Margin="0,10,0,0"
+  Visibility="Collapsed"/>
+
+            <TextBlock 
+     x:Name="MensagemSucesso"
+          Foreground="Green"
+     TextWrapping="Wrap"
+          Margin="0,10,0,0"
+      Visibility="Collapsed"/>
+        </StackPanel>
+
+        <!-- Formulario -->
+ <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="15" MaxWidth="600">
+
+         <!-- Nome Completo -->
+         <TextBlock Text="Nome Completo:" FontWeight="SemiBold"/>
+             <TextBox 
+         x:Name="NomeTextBox"
+          PlaceholderText="Digite o nome completo"/>
+
+<!-- CPF (desabilitado - nao pode alterar) -->
+    <TextBlock Text="CPF:" FontWeight="SemiBold"/>
+      <TextBox 
+          x:Name="CpfTextBox"
+            IsReadOnly="True"
+          IsEnabled="False"
+  Background="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
+
+     <!-- Data de Nascimento -->
+   <TextBlock Text="Data de Nascimento:" FontWeight="SemiBold"/>
+         <DatePicker 
+                    x:Name="DataNascimentoDatePicker"
+          HorizontalAlignment="Stretch"/>
+
+    <!-- Login -->
+      <TextBlock Text="Login:" FontWeight="SemiBold"/>
+          <TextBox 
+             x:Name="LoginTextBox"
+       PlaceholderText="Digite o login"/>
+
+      <!-- Senha -->
+       <TextBlock Text="Senha:" FontWeight="SemiBold"/>
+        <PasswordBox 
+           x:Name="SenhaPasswordBox"
+ PlaceholderText="Deixe em branco para manter a senha atual"/>
+
+                <!-- Setor -->
+        <TextBlock Text="Setor:" FontWeight="SemiBold"/>
+      <ComboBox 
+x:Name="SetorComboBox"
+               PlaceholderText="Selecione o setor"
+        HorizontalAlignment="Stretch"
+     DisplayMemberPath="Nome"
+       SelectedValuePath="Id"/>
+
+                <!-- Funcao -->
+     <TextBlock Text="Funcao:" FontWeight="SemiBold"/>
+    <ComboBox 
+             x:Name="FuncaoComboBox"
+   PlaceholderText="Selecione a funcao"
+      HorizontalAlignment="Stretch"
+   DisplayMemberPath="Nome"
+  SelectedValuePath="Id"/>
+
+     <!-- Salario -->
+     <TextBlock Text="Salario (R$):" FontWeight="SemiBold"/>
+   <NumberBox 
+    x:Name="SalarioNumberBox"
+          Value="1500"
+         Minimum="0"
+            SpinButtonPlacementMode="Inline"
+            HorizontalAlignment="Stretch"/>
+
+  <!-- Data de Admissao (somente leitura) -->
+                <TextBlock Text="Data de Admissao:" FontWeight="SemiBold"/>
+              <DatePicker 
+  x:Name="DataAdmissaoDatePicker"
+          IsEnabled="False"
+      HorizontalAlignment="Stretch"/>
+
+         <!-- Botoes -->
+       <Grid ColumnSpacing="10" Margin="0,20,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+     <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+  <Button 
+       Grid.Column="0"
+          x:Name="SalvarButton"
+             Content="Salvar Alteracoes"
+          Click="SalvarButton_Click"
+ HorizontalAlignment="Stretch"
+     Style="{StaticResource AccentButtonStyle}"/>
+
+            <Button 
+   Grid.Column="1"
+                 x:Name="CancelarButton"
+              Content="Cancelar"
+         Click="CancelarButton_Click"
+    HorizontalAlignment="Stretch"/>
+         </Grid>
+
+    <!-- Loading -->
+   <ProgressRing 
+    x:Name="LoadingRing"
+              IsActive="False"
+ Visibility="Collapsed"
+        Width="40"
+              Height="40"
+     HorizontalAlignment="Center"
+     Margin="0,10,0,0"/>
+
+  </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -14,7 +14,7 @@ namespace patrimonioDB.Features.GestaoFuncionarios
 
       public GestaoFuncionariosView()
         {
-            this.InitializeComponent();
+       this.InitializeComponent();
             _service = new FuncionarioService();
     _todosFuncionarios = new List<Funcionario>();
  
@@ -24,7 +24,7 @@ namespace patrimonioDB.Features.GestaoFuncionarios
 private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs e)
     {
     await CarregarFuncionariosAsync();
-        }
+      }
 
    private void VoltarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -34,7 +34,7 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
   }
         }
 
-        private async System.Threading.Tasks.Task CarregarFuncionariosAsync()
+  private async System.Threading.Tasks.Task CarregarFuncionariosAsync()
         {
        try
   {
@@ -43,7 +43,7 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
       MensagemSucesso.Visibility = Visibility.Collapsed;
       
     _todosFuncionarios = await _service.ListarFuncionariosAsync();
-          ExibirFuncionarios(_todosFuncionarios);
+        ExibirFuncionarios(_todosFuncionarios);
         }
          catch (Exception ex)
             {
@@ -53,7 +53,7 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
         {
    LoadingOverlay.Visibility = Visibility.Collapsed;
   }
-      }
+   }
 
         private void ExibirFuncionarios(List<Funcionario> funcionarios)
      {
@@ -62,12 +62,12 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
   if (funcionarios.Count == 0)
           {
      var mensagem = new TextBlock
-      {
-      Text = "Nenhum funcionario cadastrado",
+   {
+  Text = "Nenhum funcionario cadastrado",
            HorizontalAlignment = HorizontalAlignment.Center,
      Margin = new Thickness(0, 20, 0, 0),
    FontSize = 16,
-    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
+  Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
     };
   FuncionariosPanel.Children.Add(mensagem);
     return;
@@ -83,8 +83,8 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
         private Border CriarCardFuncionario(Funcionario funcionario)
      {
       var card = new Border
-       {
-          Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"],
+    {
+     Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"],
      BorderBrush = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardStrokeColorDefaultBrush"],
      BorderThickness = new Thickness(1),
                 CornerRadius = new Microsoft.UI.Xaml.CornerRadius(8),
@@ -96,7 +96,7 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
   grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
       grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
-            var infoStack = new StackPanel { Spacing = 5 };
+  var infoStack = new StackPanel { Spacing = 5 };
  
    var nome = new TextBlock
   {
@@ -105,12 +105,12 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
        FontWeight = Microsoft.UI.Text.FontWeights.Bold
       };
    
-            var cpf = new TextBlock
+          var cpf = new TextBlock
       {
-       Text = $"CPF: {funcionario.CPF}",
-                FontSize = 14,
-      Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
-            };
+   Text = $"CPF: {funcionario.CPF}",
+           FontSize = 14,
+ Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
+   };
  
    var cargo = new TextBlock
        {
@@ -119,7 +119,7 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
         };
    
   var salario = new TextBlock
-       {
+    {
     Text = $"Salario: R$ {funcionario.Salario:N2}",
   FontSize = 14
     };
@@ -130,9 +130,9 @@ infoStack.Children.Add(cargo);
      infoStack.Children.Add(salario);
 
   Grid.SetColumn(infoStack, 0);
-            grid.Children.Add(infoStack);
+grid.Children.Add(infoStack);
 
-       var botoesStack = new StackPanel
+    var botoesStack = new StackPanel
          {
     Orientation = Orientation.Horizontal,
      Spacing = 10
@@ -143,29 +143,29 @@ infoStack.Children.Add(cargo);
         Content = "Editar",
     Tag = funcionario
      };
-       btnEditar.Click += BtnEditar_Click;
+     btnEditar.Click += BtnEditar_Click;
 
        var btnExcluir = new Button
-            {
+         {
        Content = "Excluir",
       Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Red),
   Tag = funcionario
     };
        btnExcluir.Click += BtnExcluir_Click;
 
-            botoesStack.Children.Add(btnEditar);
+botoesStack.Children.Add(btnEditar);
   botoesStack.Children.Add(btnExcluir);
 
-       Grid.SetColumn(botoesStack, 1);
+  Grid.SetColumn(botoesStack, 1);
          grid.Children.Add(botoesStack);
 
         card.Child = grid;
        return card;
         }
 
-        private void BuscarTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    private void BuscarTextBox_TextChanged(object sender, TextChangedEventArgs e)
   {
-       var busca = BuscarTextBox.Text.ToLower().Trim();
+     var busca = BuscarTextBox.Text.ToLower().Trim();
 
 if (string.IsNullOrWhiteSpace(busca))
 {
@@ -179,7 +179,7 @@ if (string.IsNullOrWhiteSpace(busca))
      .ToList();
        
     ExibirFuncionarios(filtrados);
-            }
+       }
    }
 
     private void CadastrarNovoButton_Click(object sender, RoutedEventArgs e)
@@ -188,15 +188,14 @@ if (string.IsNullOrWhiteSpace(busca))
      }
 
     private void BtnEditar_Click(object sender, RoutedEventArgs e)
-        {
+      {
  var funcionario = (Funcionario)((Button)sender).Tag;
-      // TODO: Navegar para tela de edicao quando criada
-      MostrarMensagem($"Edicao de {funcionario.Nome} sera implementada em breve");
+    Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.EditarFuncionarioView), funcionario);
     }
 
       private async void BtnExcluir_Click(object sender, RoutedEventArgs e)
      {
-            var funcionario = (Funcionario)((Button)sender).Tag;
+  var funcionario = (Funcionario)((Button)sender).Tag;
 
             // Mostrar painel de confirmacao
     FuncionarioSelecionado.Text = $"{funcionario.Nome} (CPF: {funcionario.CPF})";
@@ -210,7 +209,7 @@ if (string.IsNullOrWhiteSpace(busca))
     {
       ConfirmacaoExclusaoPanel.Visibility = Visibility.Collapsed;
  FuncionarioParaExcluir.Tag = null;
-        }
+      }
 
         private async void ConfirmarExclusaoButton_Click(object sender, RoutedEventArgs e)
         {
@@ -219,31 +218,31 @@ if (string.IsNullOrWhiteSpace(busca))
      try
        {
     LoadingOverlay.Visibility = Visibility.Visible;
-        ConfirmacaoExclusaoPanel.Visibility = Visibility.Collapsed;
+    ConfirmacaoExclusaoPanel.Visibility = Visibility.Collapsed;
            
    await _service.RemoverFuncionarioAsync(funcionario.Id);
-          
+    
  MostrarSucesso($"Funcionario {funcionario.Nome} excluido com sucesso!");
    await CarregarFuncionariosAsync();
       }
       catch (Exception ex)
          {
-        MostrarErro($"Erro ao excluir funcionario: {ex.Message}");
+      MostrarErro($"Erro ao excluir funcionario: {ex.Message}");
  }
-          finally
+   finally
     {
       LoadingOverlay.Visibility = Visibility.Collapsed;
        FuncionarioParaExcluir.Tag = null;
-         }
+      }
 }
         }
 
-     private void MostrarErro(string mensagem)
+  private void MostrarErro(string mensagem)
 {
       MensagemErro.Text = mensagem;
      MensagemErro.Visibility = Visibility.Visible;
         MensagemSucesso.Visibility = Visibility.Collapsed;
-        }
+    }
 
      private void MostrarSucesso(string mensagem)
         {
@@ -255,8 +254,8 @@ if (string.IsNullOrWhiteSpace(busca))
    private void MostrarMensagem(string mensagem)
   {
   MensagemSucesso.Text = mensagem;
-            MensagemSucesso.Visibility = Visibility.Visible;
-        MensagemErro.Visibility = Visibility.Collapsed;
+       MensagemSucesso.Visibility = Visibility.Visible;
+  MensagemErro.Visibility = Visibility.Collapsed;
   }
     }
 }
