@@ -1,105 +1,101 @@
 ﻿using System;
 using Npgsql;
 using patrimonioDB.Shared.Database;
+using patrimonioDB.Shared.Security;
 using patrimonioDB.Classes;
+using System.Diagnostics;
 
 namespace patrimonioDB.Features.Login
 {
     public class LoginRepository
     {
-        public Funcionario? BuscarPorLogin(string login)
-        {
-            try
-            {
-                using (var connection = DatabaseConnection.GetConnection())
-                {
-                    string sql = @"
-                      SELECT p.id, p.nome, p.login, p.senha, u.data_admissao, u.id_setor, u.salario, u.id_funcao
-                       FROM funcionario u 
-                          INNER JOIN pessoa p ON u.id_pessoa = p.id 
-                        WHERE p.login = @login";
+     /// <summary>
+        /// Busca usuário por login e retorna (usuario, isAdmin)
+   /// </summary>
+        public (Classes.Funcionario? usuario, bool isAdmin) BuscarPorLogin(string login)
+     {
+       using (var connection = DatabaseConnection.GetConnection())
+  {
+   // ✅ PASSO 1: Tentar buscar como Funcionário
+  string sqlFuncionario = @"SELECT 
+      p.ID, p.NOME, p.CPF, p.NASCIMENTO, p.LOGIN, p.SENHA,
+  f.ID_FUNCAO, f.ID_SETOR, f.SALARIO, f.DATA_ADMISSAO,
+       fn.NOME as CARGO
+     FROM Pessoa p
+       INNER JOIN Funcionario f ON p.ID = f.ID_PESSOA
+   LEFT JOIN Funcao fn ON f.ID_FUNCAO = fn.ID
+      WHERE UPPER(p.LOGIN) = UPPER(@login)";
 
-                    using (var command = new NpgsqlCommand(sql, connection))
-                    {
-                        command.Parameters.AddWithValue("@login", login);
+  using (var command = new NpgsqlCommand(sqlFuncionario, connection))
+    {
+  command.Parameters.AddWithValue("@login", login);
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                var funcionario = new Funcionario
-                                {
-                                    Id = reader.GetInt32(0),
-                                    Nome = reader.GetString(1),
-                                    Login = reader.GetString(2),
-                                    Senha = reader.GetString(3),
-                                    DataAdmissao = reader.GetDateTime(4),
-                                    SetorId = reader.GetInt32(5),
-                                    Salario = reader.GetDouble(6),
-                                    Id_funcao = reader.GetInt32(7)
-                                };
-                                return funcionario;
-                            }
+           using (var reader = command.ExecuteReader())
+      {
+      if (reader.Read())
+      {
+   var funcionario = new Classes.Funcionario
+     {
+         Id = reader.GetInt32(0),
+         Nome = reader.GetString(1),
+       CPF = reader.GetString(2),
+       Nascimento = reader.GetDateTime(3),
+Login = reader.GetString(4),
+ Senha = reader.GetString(5),
+     Id_funcao = reader.GetInt32(6),
+    SetorId = reader.GetInt32(7),
+    Salario = reader.GetDouble(8),
+        DataAdmissao = reader.GetDateTime(9),
+      Cargo = reader.IsDBNull(10) ? "Sem Cargo" : reader.GetString(10)
+        };
 
-                            return null; // não encontrou
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log do erro para debug (opcional)
-                System.Diagnostics.Debug.WriteLine($"[ERRO LOGIN FUNCIONÁRIO] {ex.Message}");
-
-                // Retorna null em caso de erro (usuário não encontrado ou problema na query)
-                return null;
-            }
+      Debug.WriteLine($"✓ Funcionário encontrado: {funcionario.Nome} (Login: {funcionario.Login})");
+   return (funcionario, false);  // ✅ false = não é admin
+       }
         }
+    }
 
-        public Administrador? BuscarAdministradorPorLogin(string login)
-        {
-            try
-            {
-                using (var connection = DatabaseConnection.GetConnection())
-                {
-                    string sql = @"
-                     SELECT p.id, p.nome, p.login, p.senha, a.salario
-                      FROM administrador a 
-                 INNER JOIN pessoa p ON a.id_pessoa = p.id 
-                  WHERE p.login = @login";
+      // ✅ PASSO 2: Se não encontrou como Funcionário, tentar buscar como Administrador
+         string sqlAdmin = @"SELECT 
+     p.ID, p.NOME, p.CPF, p.NASCIMENTO, p.LOGIN, p.SENHA,
+   a.SALARIO
+        FROM Pessoa p
+      INNER JOIN Administrador a ON p.ID = a.ID_PESSOA
+    WHERE UPPER(p.LOGIN) = UPPER(@login)";
 
-                    using (var command = new NpgsqlCommand(sql, connection))
-                    {
-                        command.Parameters.AddWithValue("@login", login);
+   using (var command = new NpgsqlCommand(sqlAdmin, connection))
+     {
+            command.Parameters.AddWithValue("@login", login);
 
-                        using (var reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                var administrador = new Administrador
-                                {
-                                    Id = reader.GetInt32(0),
-                                    Nome = reader.GetString(1),
-                                    Login = reader.GetString(2),
-                                    Senha = reader.GetString(3),
-                                    Salario = reader.GetDouble(4)
-                                };
-                                return administrador;
-                            }
+         using (var reader = command.ExecuteReader())
+          {
+           if (reader.Read())
+   {
+              // Retornar como Funcionario mas marcado como Admin
+   var admin = new Classes.Funcionario
+       {
+        Id = reader.GetInt32(0),
+  Nome = reader.GetString(1),
+          CPF = reader.GetString(2),
+        Nascimento = reader.GetDateTime(3),
+ Login = reader.GetString(4),
+        Senha = reader.GetString(5),
+           Salario = reader.GetDouble(6),
+      Cargo = "Administrador",
+         Id_funcao = 0,  // Admin não tem função
+       SetorId = 0,    // Admin não tem setor
+  DataAdmissao = reader.GetDateTime(3) // Usar data de nascimento como aproximação
+            };
 
-                            return null; // não encontrou
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log do erro para debug (opcional)
-                System.Diagnostics.Debug.WriteLine($"[ERRO LOGIN ADMINISTRADOR] {ex.Message}");
+       Debug.WriteLine($"✓ Administrador encontrado: {admin.Nome} (Login: {admin.Login})");
+     return (admin, true);  // ✅ true = é admin
+}
+        }
+     }
+     }
 
-                // Retorna null em caso de erro (usuário não encontrado ou problema na query)
-                return null;
-            }
+            Debug.WriteLine($"✗ Nenhum usuário encontrado com login: {login}");
+     return (null, false);
         }
     }
 }

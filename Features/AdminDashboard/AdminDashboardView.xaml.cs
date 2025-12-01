@@ -60,5 +60,14 @@ namespace patrimonioDB.Features.AdminDashboard
         {
             Frame.Navigate(typeof(patrimonioDB.Features.CriarSetor.CriarSetorView));
         }
+
+        /// <summary>
+        /// ? NOVO: Navega para a tela de Gerar PDF de Funcionários
+        /// Disponível apenas para administrador
+        /// </summary>
+        private void GerarPdfButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(patrimonioDB.Features.PdfFuncionario.GerarPdfFuncionariosView));
+        }
     }
 }

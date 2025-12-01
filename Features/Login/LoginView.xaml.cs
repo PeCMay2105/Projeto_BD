@@ -1,19 +1,23 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Npgsql;
-using patrimonioDB.Shared.Database;
-using patrimonioDB.Shared.Utils;
+using patrimonioDB.Classes;
+using patrimonioDB.Features.AdminDashboard;
+using patrimonioDB.Features.FuncionarioDashboard;
 using patrimonioDB.Shared.Session;
 
 namespace patrimonioDB.Features.Login
 {
     public sealed partial class LoginView : Page
     {
+        private readonly LoginService _loginService;
+
         public LoginView()
         {
             this.InitializeComponent();
+            _loginService = new LoginService();
         }
 
         private void VoltarButton_Click(object sender, RoutedEventArgs e)
@@ -24,20 +28,37 @@ namespace patrimonioDB.Features.Login
             }
         }
 
+        private void LoginTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                SenhaPasswordBox.Focus(FocusState.Programmatic);
+            }
+        }
+
+        private void SenhaPasswordBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                EntrarButton_Click(this, new RoutedEventArgs());
+            }
+        }
+
         private async void EntrarButton_Click(object sender, RoutedEventArgs e)
         {
             MensagemErro.Visibility = Visibility.Collapsed;
             MensagemSucesso.Visibility = Visibility.Collapsed;
 
+            // Validações básicas
             if (string.IsNullOrWhiteSpace(EmailTextBox.Text))
             {
-                MostrarErro("Por favor, informe o login.");
+                MostrarErro("Por favor, digite o login.");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(SenhaPasswordBox.Password))
             {
-                MostrarErro("Por favor, informe a senha.");
+                MostrarErro("Por favor, digite a senha.");
                 return;
             }
 
@@ -47,73 +68,50 @@ namespace patrimonioDB.Features.Login
 
             try
             {
-                var loginService = new LoginService();
-                bool isAdmin = LoginAdminCheckBox.IsChecked == true;
+                await System.Threading.Tasks.Task.Delay(500);
 
-                if (isAdmin)
+                string login = EmailTextBox.Text;
+                string senha = SenhaPasswordBox.Password;
+
+                Debug.WriteLine($"\n=== TENTATIVA DE LOGIN ===");
+                Debug.WriteLine($"Login digitado: {login}");
+                Debug.WriteLine($"Senha digitada: {senha}");
+
+                var resultado = _loginService.Autenticar(login, senha);
+
+                if (resultado.usuario != null)
                 {
-                    // Login como Administrador
-                    var administrador = loginService.AutenticarAdministrador(EmailTextBox.Text, SenhaPasswordBox.Password);
+                    // Login bem-sucedido
+                    UserSession.SetFuncionario(resultado.usuario.Id, resultado.usuario.Nome);
 
-                    if (administrador != null)
+                    MostrarSucesso($"Login realizado com sucesso!\n\nBem-vindo, {resultado.usuario.Nome}!");
+
+                    // Aguardar 1.5 segundos e navegar
+                    await System.Threading.Tasks.Task.Delay(1500);
+
+                    // ✅ CORRIGIDO: Verificar pelo tipo de usuário retornado
+                    if (resultado.isAdmin)
                     {
-                        // *** CONFIGURAR SESSÃO ***
-                        UserSession.SetAdministrador(administrador.Id, administrador.Nome);
-
-                        MostrarSucesso($"Login de Administrador realizado com sucesso!\n\nBem-vindo, {administrador.Nome}!");
-
-                        // Aguarda 1.5 segundos para o usuario ver a mensagem
-                        await Task.Delay(1500);
-
-                        // Navega para o Painel do Administrador e passa o nome
-                        var adminDashboard = new patrimonioDB.Features.AdminDashboard.AdminDashboardView();
-                        adminDashboard.SetAdministradorNome(administrador.Nome);
-                        Frame.Navigate(typeof(patrimonioDB.Features.AdminDashboard.AdminDashboardView));
-
-                        // Configura o nome apos navegar
-                        if (Frame.Content is patrimonioDB.Features.AdminDashboard.AdminDashboardView adminView)
-                        {
-                            adminView.SetAdministradorNome(administrador.Nome);
-                        }
+                        Debug.WriteLine("→ Navegando para AdminDashboard");
+                        Frame.Navigate(typeof(AdminDashboardView));
                     }
                     else
                     {
-                        MostrarErro("Login ou senha incorretos para Administrador.");
+                        Debug.WriteLine("→ Navegando para FuncionarioDashboard");
+                        Frame.Navigate(typeof(FuncionarioDashboardView));
                     }
                 }
                 else
                 {
-                    // Login como Funcionario
-                    var funcionario = loginService.Autenticar(EmailTextBox.Text, SenhaPasswordBox.Password);
-
-                    if (funcionario != null)
-                    {
-                        // *** CONFIGURAR SESSÃO ***
-                        UserSession.SetFuncionario(funcionario.Id, funcionario.Nome);
-
-                        MostrarSucesso($"Login realizado com sucesso!\n\nBem-vindo, {funcionario.Nome}!");
-
-                        // Aguarda 1.5 segundos para o usuario ver a mensagem
-                        await Task.Delay(1500);
-
-                        // Navega para o Painel do Funcionario
-                        Frame.Navigate(typeof(patrimonioDB.Features.FuncionarioDashboard.FuncionarioDashboardView));
-
-                        // Configura o nome apos navegar
-                        if (Frame.Content is patrimonioDB.Features.FuncionarioDashboard.FuncionarioDashboardView funcView)
-                        {
-                            funcView.SetFuncionarioNome(funcionario.Nome);
-                        }
-                    }
-                    else
-                    {
-                        MostrarErro("Login ou senha incorretos.");
-                    }
+                    // Login falhou
+                    MostrarErro("Login ou senha incorretos.\n\nVerifique suas credenciais e tente novamente.");
+                    Debug.WriteLine("✗ Autenticação falhou");
                 }
             }
             catch (Exception ex)
             {
-                MostrarErro($"Erro: {ex.Message}");
+                MostrarErro($"Erro ao realizar login:\n{ex.Message}");
+                Debug.WriteLine($"ERRO LOGIN: {ex}");
             }
             finally
             {
@@ -127,12 +125,14 @@ namespace patrimonioDB.Features.Login
         {
             MensagemErro.Text = mensagem;
             MensagemErro.Visibility = Visibility.Visible;
+            MensagemSucesso.Visibility = Visibility.Collapsed;
         }
 
         private void MostrarSucesso(string mensagem)
         {
             MensagemSucesso.Text = mensagem;
             MensagemSucesso.Visibility = Visibility.Visible;
+            MensagemErro.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -10,27 +10,27 @@ namespace patrimonioDB.Features.GestaoFuncionarios
     public sealed partial class GestaoFuncionariosView : Page
     {
    private readonly FuncionarioService _service;
-        private List<Funcionario> _todosFuncionarios;
+        private List<Classes.Funcionario> _todosFuncionarios;  // ? Usar caminho completo
 
       public GestaoFuncionariosView()
         {
-       this.InitializeComponent();
+     this.InitializeComponent();
             _service = new FuncionarioService();
-    _todosFuncionarios = new List<Funcionario>();
+    _todosFuncionarios = new List<Classes.Funcionario>();  // ? Usar caminho completo
  
    this.Loaded += GestaoFuncionariosView_Loaded;
  }
 
 private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs e)
     {
-    await CarregarFuncionariosAsync();
+  await CarregarFuncionariosAsync();
       }
 
    private void VoltarButton_Click(object sender, RoutedEventArgs e)
-        {
+  {
     if (Frame.CanGoBack)
      {
-    Frame.GoBack();
+ Frame.GoBack();
   }
         }
 
@@ -40,32 +40,32 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
   {
   LoadingOverlay.Visibility = Visibility.Visible;
     MensagemErro.Visibility = Visibility.Collapsed;
-      MensagemSucesso.Visibility = Visibility.Collapsed;
+  MensagemSucesso.Visibility = Visibility.Collapsed;
       
     _todosFuncionarios = await _service.ListarFuncionariosAsync();
-        ExibirFuncionarios(_todosFuncionarios);
+    ExibirFuncionarios(_todosFuncionarios);
         }
          catch (Exception ex)
-            {
-   MostrarErro($"Erro ao carregar funcionarios: {ex.Message}");
-        }
+          {
+ MostrarErro($"Erro ao carregar funcionarios: {ex.Message}");
+      }
     finally
         {
    LoadingOverlay.Visibility = Visibility.Collapsed;
   }
    }
 
-        private void ExibirFuncionarios(List<Funcionario> funcionarios)
+   private void ExibirFuncionarios(List<Classes.Funcionario> funcionarios)  // ? Usar caminho completo
      {
    FuncionariosPanel.Children.Clear();
 
   if (funcionarios.Count == 0)
-          {
-     var mensagem = new TextBlock
+   {
+   var mensagem = new TextBlock
    {
   Text = "Nenhum funcionario cadastrado",
            HorizontalAlignment = HorizontalAlignment.Center,
-     Margin = new Thickness(0, 20, 0, 0),
+  Margin = new Thickness(0, 20, 0, 0),
    FontSize = 16,
   Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
     };
@@ -74,25 +74,25 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
     }
 
   foreach (var funcionario in funcionarios)
-        {
+  {
       var card = CriarCardFuncionario(funcionario);
     FuncionariosPanel.Children.Add(card);
     }
         }
 
-        private Border CriarCardFuncionario(Funcionario funcionario)
+        private Border CriarCardFuncionario(Classes.Funcionario funcionario)  // ? Usar caminho completo
      {
       var card = new Border
-    {
+  {
      Background = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"],
      BorderBrush = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["CardStrokeColorDefaultBrush"],
      BorderThickness = new Thickness(1),
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(8),
+       CornerRadius = new Microsoft.UI.Xaml.CornerRadius(8),
       Padding = new Thickness(15),
    Margin = new Thickness(0, 0, 0, 10)
-     };
+};
 
-      var grid = new Grid();
+    var grid = new Grid();
   grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
       grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
@@ -101,20 +101,20 @@ private async void GestaoFuncionariosView_Loaded(object sender, RoutedEventArgs 
    var nome = new TextBlock
   {
       Text = funcionario.Nome,
-        FontSize = 18,
+     FontSize = 18,
        FontWeight = Microsoft.UI.Text.FontWeights.Bold
       };
    
-          var cpf = new TextBlock
+       var cpf = new TextBlock
       {
    Text = $"CPF: {funcionario.CPF}",
-           FontSize = 14,
+        FontSize = 14,
  Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
    };
  
    var cargo = new TextBlock
        {
-    Text = $"Cargo: {funcionario.Cargo}",
+  Text = $"Cargo: {funcionario.Cargo}",
     FontSize = 14
         };
    
@@ -132,23 +132,23 @@ infoStack.Children.Add(cargo);
   Grid.SetColumn(infoStack, 0);
 grid.Children.Add(infoStack);
 
-    var botoesStack = new StackPanel
+var botoesStack = new StackPanel
          {
     Orientation = Orientation.Horizontal,
      Spacing = 10
    };
 
   var btnEditar = new Button
-       {
+{
         Content = "Editar",
     Tag = funcionario
-     };
+   };
      btnEditar.Click += BtnEditar_Click;
 
-       var btnExcluir = new Button
+   var btnExcluir = new Button
          {
-       Content = "Excluir",
-      Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Red),
+    Content = "Excluir",
+    Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Red),
   Tag = funcionario
     };
        btnExcluir.Click += BtnExcluir_Click;
@@ -157,10 +157,10 @@ botoesStack.Children.Add(btnEditar);
   botoesStack.Children.Add(btnExcluir);
 
   Grid.SetColumn(botoesStack, 1);
-         grid.Children.Add(botoesStack);
+  grid.Children.Add(botoesStack);
 
         card.Child = grid;
-       return card;
+  return card;
         }
 
     private void BuscarTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -178,26 +178,26 @@ if (string.IsNullOrWhiteSpace(busca))
     f.CPF.Contains(busca))
      .ToList();
        
-    ExibirFuncionarios(filtrados);
+ ExibirFuncionarios(filtrados);
        }
    }
 
     private void CadastrarNovoButton_Click(object sender, RoutedEventArgs e)
    {
-            Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.CadastrarFuncionarioView));
-     }
+       Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.CadastrarFuncionarioView));
+}
 
     private void BtnEditar_Click(object sender, RoutedEventArgs e)
       {
- var funcionario = (Funcionario)((Button)sender).Tag;
-    Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.EditarFuncionarioView), funcionario);
+ var funcionario = (Classes.Funcionario)((Button)sender).Tag;  // ? Usar caminho completo
+ Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.EditarFuncionarioView), funcionario);
     }
 
       private async void BtnExcluir_Click(object sender, RoutedEventArgs e)
      {
-  var funcionario = (Funcionario)((Button)sender).Tag;
+  var funcionario = (Classes.Funcionario)((Button)sender).Tag;  // ? Usar caminho completo
 
-            // Mostrar painel de confirmacao
+      // Mostrar painel de confirmacao
     FuncionarioSelecionado.Text = $"{funcionario.Nome} (CPF: {funcionario.CPF})";
    FuncionarioParaExcluir.Tag = funcionario;
   ConfirmacaoExclusaoPanel.Visibility = Visibility.Visible;
@@ -211,22 +211,22 @@ if (string.IsNullOrWhiteSpace(busca))
  FuncionarioParaExcluir.Tag = null;
       }
 
-        private async void ConfirmarExclusaoButton_Click(object sender, RoutedEventArgs e)
+     private async void ConfirmarExclusaoButton_Click(object sender, RoutedEventArgs e)
         {
-  if (FuncionarioParaExcluir.Tag is Funcionario funcionario)
+  if (FuncionarioParaExcluir.Tag is Classes.Funcionario funcionario)  // ? Usar caminho completo
        {
      try
        {
     LoadingOverlay.Visibility = Visibility.Visible;
     ConfirmacaoExclusaoPanel.Visibility = Visibility.Collapsed;
-           
+     
    await _service.RemoverFuncionarioAsync(funcionario.Id);
     
  MostrarSucesso($"Funcionario {funcionario.Nome} excluido com sucesso!");
    await CarregarFuncionariosAsync();
-      }
+   }
       catch (Exception ex)
-         {
+ {
       MostrarErro($"Erro ao excluir funcionario: {ex.Message}");
  }
    finally
@@ -240,14 +240,14 @@ if (string.IsNullOrWhiteSpace(busca))
   private void MostrarErro(string mensagem)
 {
       MensagemErro.Text = mensagem;
-     MensagemErro.Visibility = Visibility.Visible;
-        MensagemSucesso.Visibility = Visibility.Collapsed;
+   MensagemErro.Visibility = Visibility.Visible;
+    MensagemSucesso.Visibility = Visibility.Collapsed;
     }
 
      private void MostrarSucesso(string mensagem)
         {
  MensagemSucesso.Text = mensagem;
-       MensagemSucesso.Visibility = Visibility.Visible;
+  MensagemSucesso.Visibility = Visibility.Visible;
          MensagemErro.Visibility = Visibility.Collapsed;
 }
 

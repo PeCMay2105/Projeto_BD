@@ -12,51 +12,51 @@ namespace patrimonioDB.Features.GestaoFuncionarios
  {
         private readonly FuncionarioService _service;
      private readonly CriarSetorService _setorService;
-      private Funcionario _funcionario;
+      private Classes.Funcionario _funcionario;  // ? Usar caminho completo
 
         public EditarFuncionarioView()
-        {
+  {
    this.InitializeComponent();
     _service = new FuncionarioService();
-            _setorService = new CriarSetorService();
+   _setorService = new CriarSetorService();
   }
 
-        /// <summary>
-        /// Chamado quando a página recebe o parâmetro de navegação
+    /// <summary>
+   /// Chamado quando a página recebe o parâmetro de navegação
         /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-      {
+  protected override async void OnNavigatedTo(NavigationEventArgs e)
+  {
       base.OnNavigatedTo(e);
 
-if (e.Parameter is Funcionario funcionario)
+if (e.Parameter is Classes.Funcionario funcionario)  // ? Usar caminho completo
     {
-       _funcionario = funcionario;
+    _funcionario = funcionario;
      
         // Carregar setores e funções primeiro
-          await CarregarSetoresEFuncoesAsync();
+      await CarregarSetoresEFuncoesAsync();
        
 // Depois preencher o formulário
    PreencherFormulario();
-            }
-            else
+     }
+  else
     {
-      MostrarErro("Erro: Funcionário não encontrado.");
+   MostrarErro("Erro: Funcionário não encontrado.");
             }
       }
 
         private void VoltarButton_Click(object sender, RoutedEventArgs e)
-        {
+    {
             if (Frame.CanGoBack)
-            {
-       Frame.GoBack();
+         {
+     Frame.GoBack();
        }
-        }
+  }
 
         private async System.Threading.Tasks.Task CarregarSetoresEFuncoesAsync()
-        {
+      {
     try
           {
-            // Carregar setores
+// Carregar setores
     var setores = await _setorService.ObterSetoresDoBancoDeDadosAsync();
         SetorComboBox.ItemsSource = setores;
 
@@ -64,15 +64,15 @@ if (e.Parameter is Funcionario funcionario)
         var funcoes = await _service.ListarFuncoesAsync();
            FuncaoComboBox.ItemsSource = funcoes;
    }
-            catch (Exception ex)
-     {
+    catch (Exception ex)
+   {
       MostrarErro($"Erro ao carregar dados: {ex.Message}");
             }
 }
 
      private void PreencherFormulario()
      {
-            if (_funcionario == null) return;
+   if (_funcionario == null) return;
 
        try
           {
@@ -82,7 +82,7 @@ if (e.Parameter is Funcionario funcionario)
  DataNascimentoDatePicker.Date = new DateTimeOffset(_funcionario.Nascimento);
      LoginTextBox.Text = _funcionario.Login;
            SalarioNumberBox.Value = _funcionario.Salario;
-      DataAdmissaoDatePicker.Date = new DateTimeOffset(_funcionario.DataAdmissao);
+DataAdmissaoDatePicker.Date = new DateTimeOffset(_funcionario.DataAdmissao);
 
           // Selecionar setor (procurar pelo ID na lista)
     if (SetorComboBox.ItemsSource != null)
@@ -90,18 +90,18 @@ if (e.Parameter is Funcionario funcionario)
             var setores = SetorComboBox.ItemsSource as System.Collections.Generic.List<Setor>;
       if (setores != null)
      {
-    var setorSelecionado = setores.FirstOrDefault(s => s.Id == _funcionario.SetorId);
-       if (setorSelecionado != null)
+   var setorSelecionado = setores.FirstOrDefault(s => s.Id == _funcionario.SetorId);
+if (setorSelecionado != null)
    {
 SetorComboBox.SelectedItem = setorSelecionado;
  }
             }
-       }
+     }
 
-              // Selecionar função (procurar pelo ID na lista)
-                if (FuncaoComboBox.ItemsSource != null)
-       {
-           var funcoes = FuncaoComboBox.ItemsSource as System.Collections.Generic.List<Funcao>;
+   // Selecionar função (procurar pelo ID na lista)
+            if (FuncaoComboBox.ItemsSource != null)
+    {
+     var funcoes = FuncaoComboBox.ItemsSource as System.Collections.Generic.List<Funcao>;
     if (funcoes != null)
    {
        var funcaoSelecionada = funcoes.FirstOrDefault(f => f.Id == _funcionario.Id_funcao);
@@ -109,16 +109,16 @@ SetorComboBox.SelectedItem = setorSelecionado;
        {
       FuncaoComboBox.SelectedItem = funcaoSelecionada;
         }
-        }
+     }
        }
 
-          System.Diagnostics.Debug.WriteLine($"Formulário preenchido - Setor ID: {_funcionario.SetorId}, Função ID: {_funcionario.Id_funcao}");
-            }
-       catch (Exception ex)
+      System.Diagnostics.Debug.WriteLine($"Formulário preenchido - Setor ID: {_funcionario.SetorId}, Função ID: {_funcionario.Id_funcao}");
+    }
+    catch (Exception ex)
     {
    MostrarErro($"Erro ao preencher formulário: {ex.Message}");
-         System.Diagnostics.Debug.WriteLine($"ERRO PREENCHER: {ex.Message}");
-            }
+       System.Diagnostics.Debug.WriteLine($"ERRO PREENCHER: {ex.Message}");
+  }
         }
 
     private async void SalvarButton_Click(object sender, RoutedEventArgs e)
@@ -126,10 +126,10 @@ SetorComboBox.SelectedItem = setorSelecionado;
        MensagemErro.Visibility = Visibility.Collapsed;
         MensagemSucesso.Visibility = Visibility.Collapsed;
 
-            // Validação básica
-            if (string.IsNullOrWhiteSpace(NomeTextBox.Text))
+         // Validação básica
+   if (string.IsNullOrWhiteSpace(NomeTextBox.Text))
      {
-                MostrarErro("Por favor, preencha o nome.");
+       MostrarErro("Por favor, preencha o nome.");
    return;
     }
 
@@ -139,77 +139,77 @@ SetorComboBox.SelectedItem = setorSelecionado;
            return;
       }
 
-            if (SetorComboBox.SelectedItem == null)
+if (SetorComboBox.SelectedItem == null)
   {
-    MostrarErro("Por favor, selecione um setor.");
-                return;
+  MostrarErro("Por favor, selecione um setor.");
+        return;
      }
 
-       if (FuncaoComboBox.SelectedItem == null)
-          {
+    if (FuncaoComboBox.SelectedItem == null)
+        {
         MostrarErro("Por favor, selecione uma funcao.");
    return;
-          }
+        }
 
-            LoadingRing.IsActive = true;
+        LoadingRing.IsActive = true;
   LoadingRing.Visibility = Visibility.Visible;
    SalvarButton.IsEnabled = false;
 
-          try
-            {
+ try
+       {
       var setorSelecionado = (Setor)SetorComboBox.SelectedItem;
     var funcaoSelecionada = (Funcao)FuncaoComboBox.SelectedItem;
 
   // Se senha estiver vazia, manter a senha atual
   string senha = string.IsNullOrWhiteSpace(SenhaPasswordBox.Password) 
-              ? _funcionario.Senha 
+   ? _funcionario.Senha 
           : SenhaPasswordBox.Password;
 
-            await _service.AtualizarFuncionarioAsync(
-     _funcionario.Id,
+  await _service.AtualizarFuncionarioAsync(
+   _funcionario.Id,
        NomeTextBox.Text,
            _funcionario.CPF, // CPF não pode ser alterado
-             DataNascimentoDatePicker.Date.DateTime,
+    DataNascimentoDatePicker.Date.DateTime,
  LoginTextBox.Text,
           senha,
               setorSelecionado.Id,
        funcaoSelecionada.Id,
-             SalarioNumberBox.Value
+     SalarioNumberBox.Value
      );
 
  MostrarSucesso($"Funcionario {NomeTextBox.Text} atualizado com sucesso!");
 
-       // Aguardar 1.5 segundos e voltar
+  // Aguardar 1.5 segundos e voltar
            await System.Threading.Tasks.Task.Delay(1500);
       
     if (Frame.CanGoBack)
-                {
-              Frame.GoBack();
+        {
+      Frame.GoBack();
 }
-            }
-            catch (ValidacaoFuncionarioException vex)
+      }
+  catch (ValidacaoFuncionarioException vex)
             {
-         MostrarErro(vex.Message);
+   MostrarErro(vex.Message);
             }
-            catch (Exception ex)
+       catch (Exception ex)
     {
-       MostrarErro($"Erro ao atualizar funcionario: {ex.Message}");
+   MostrarErro($"Erro ao atualizar funcionario: {ex.Message}");
     System.Diagnostics.Debug.WriteLine($"ERRO ATUALIZAR: {ex}");
-          }
+     }
             finally
  {
-             LoadingRing.IsActive = false;
-           LoadingRing.Visibility = Visibility.Collapsed;
+        LoadingRing.IsActive = false;
+   LoadingRing.Visibility = Visibility.Collapsed;
        SalvarButton.IsEnabled = true;
             }
-        }
+  }
 
         private void CancelarButton_Click(object sender, RoutedEventArgs e)
         {
        if (Frame.CanGoBack)
-            {
-  Frame.GoBack();
-            }
+         {
+Frame.GoBack();
+       }
         }
 
    private void MostrarErro(string mensagem)
@@ -222,7 +222,7 @@ SetorComboBox.SelectedItem = setorSelecionado;
         private void MostrarSucesso(string mensagem)
   {
  MensagemSucesso.Text = mensagem;
-            MensagemSucesso.Visibility = Visibility.Visible;
+  MensagemSucesso.Visibility = Visibility.Visible;
             MensagemErro.Visibility = Visibility.Collapsed;
         }
     }

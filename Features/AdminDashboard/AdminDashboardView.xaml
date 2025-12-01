@@ -58,50 +58,69 @@
 
       <!-- Card: Gestao de Funcionarios -->
      <Border 
-          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-      BorderThickness="1"
+    BorderThickness="1"
          CornerRadius="8"
           Padding="30"
          HorizontalAlignment="Stretch">
       <StackPanel Spacing="15">
-          <StackPanel Spacing="5">
+   <StackPanel Spacing="5">
          <TextBlock 
       Text="Gestao de Funcionarios" 
-             FontSize="24" 
+   FontSize="24" 
     FontWeight="Bold"/>
       <TextBlock 
      Text="Gerencie todos os funcionarios cadastrados no sistema"
-               TextWrapping="Wrap"
-             Foreground="Gray"
+   TextWrapping="Wrap"
+      Foreground="Gray"
          FontSize="14"/>
      </StackPanel>
       
-            <Grid ColumnSpacing="15">
+   <Grid ColumnSpacing="15" RowSpacing="15">
        <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
-          </Grid.ColumnDefinitions>
+      </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+       <RowDefinition Height="Auto"/>
+             <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
 
       <Button 
  Grid.Column="0"
+          Grid.Row="0"
   x:Name="CadastrarFuncionarioButton"
-             Content="Cadastrar Funcionario"
+        Content="Cadastrar Funcionario"
    Click="CadastrarFuncionarioButton_Click"
-              HorizontalAlignment="Stretch"
+     HorizontalAlignment="Stretch"
      Height="50"
       Style="{StaticResource AccentButtonStyle}"/>
 
-                <Button 
+     <Button 
      Grid.Column="1"
+            Grid.Row="0"
    x:Name="EditarFuncionarioButton"
           Content="Gerenciar Funcionarios"
  Click="EditarFuncionarioButton_Click"
         HorizontalAlignment="Stretch"
-          Height="50"/>
+      Height="50"/>
+
+       <!-- ✅ NOVO: Botão Gerar PDF -->
+  <Button 
+         Grid.Column="0"
+       Grid.Row="1"
+          Grid.ColumnSpan="2"
+             x:Name="GerarPdfButton"
+     Content="📄 Gerar Relatório PDF de Funcionários"
+  Click="GerarPdfButton_Click"
+       HorizontalAlignment="Stretch"
+         Height="50"
+Background="#0078D4"
+            Foreground="White"/>
 </Grid>
         </StackPanel>
-                </Border>
+       </Border>
 
     <!-- Card: Gestao de Patrimonio -->
         <Border 
