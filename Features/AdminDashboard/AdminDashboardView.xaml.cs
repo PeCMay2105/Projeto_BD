@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using patrimonioDB.Shared.Session;
 
 namespace patrimonioDB.Features.AdminDashboard
 {
@@ -23,6 +24,8 @@ namespace patrimonioDB.Features.AdminDashboard
         /// </summary>
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            // Limpar sessão ao fazer logout
+            UserSession.Clear();
             Frame.Navigate(typeof(patrimonioDB.Features.Home.HomeView));
         }
 

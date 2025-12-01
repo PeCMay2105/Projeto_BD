@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace patrimonioDB.Classes
 {
     public class Item
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
+        public string Nome { get; set; } = string.Empty;
         public int Setor_Id { get; set; }
-        public DateTime DataCompra {  get; set; }
-        public DateTime? DataRemocao { get; set; }
-        public int FuncionarioResponsavel_Id { get; set; }
-        public int Quantidade { get; set; }
-        public string Descricao { get; set; }
-        public double ValorUnitario { get; set; }
-        public string NomeSetor { get; set; }
+        
+        // Propriedades para exibição (não estão na tabela item)
+        public string NomeSetor { get; set; } = string.Empty;
+        public int QuantidadeTotal { get; set; } // Soma das quantidades das compras
+        public double ValorUnitarioMedio { get; set; } // Média dos preços de compra
+        public DateTime? UltimaCompra { get; set; }
+        public DateTime? UltimaVenda { get; set; }
 
-        public double ValorTotal => Quantidade * ValorUnitario;
-        public bool EstaAtivo => DataRemocao == null;
+        // Propriedades calculadas
+        public double ValorTotalEstoque => QuantidadeTotal * ValorUnitarioMedio;
+        public bool TemEstoque => QuantidadeTotal > 0;
     }
 }

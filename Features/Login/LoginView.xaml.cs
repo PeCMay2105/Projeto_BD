@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using Npgsql;
 using patrimonioDB.Shared.Database;
 using patrimonioDB.Shared.Utils;
+using patrimonioDB.Shared.Session;
 
 namespace patrimonioDB.Features.Login
 {
@@ -56,13 +57,24 @@ namespace patrimonioDB.Features.Login
 
                     if (administrador != null)
                     {
+                        // *** CONFIGURAR SESSÃO ***
+                        UserSession.SetAdministrador(administrador.Id, administrador.Nome);
+
                         MostrarSucesso($"Login de Administrador realizado com sucesso!\n\nBem-vindo, {administrador.Nome}!");
 
-                        // Aguarda 1.5 segundos para o usuário ver a mensagem
+                        // Aguarda 1.5 segundos para o usuario ver a mensagem
                         await Task.Delay(1500);
 
-                        // Navega para o Painel do Administrador
+                        // Navega para o Painel do Administrador e passa o nome
+                        var adminDashboard = new patrimonioDB.Features.AdminDashboard.AdminDashboardView();
+                        adminDashboard.SetAdministradorNome(administrador.Nome);
                         Frame.Navigate(typeof(patrimonioDB.Features.AdminDashboard.AdminDashboardView));
+
+                        // Configura o nome apos navegar
+                        if (Frame.Content is patrimonioDB.Features.AdminDashboard.AdminDashboardView adminView)
+                        {
+                            adminView.SetAdministradorNome(administrador.Nome);
+                        }
                     }
                     else
                     {
@@ -71,18 +83,27 @@ namespace patrimonioDB.Features.Login
                 }
                 else
                 {
-                    // Login como Funcionário
-                    var usuario = loginService.Autenticar(EmailTextBox.Text, SenhaPasswordBox.Password);
+                    // Login como Funcionario
+                    var funcionario = loginService.Autenticar(EmailTextBox.Text, SenhaPasswordBox.Password);
 
-                    if (usuario != null)
+                    if (funcionario != null)
                     {
-                        MostrarSucesso($"Login realizado com sucesso!\n\nBem-vindo, {usuario.Nome}!");
+                        // *** CONFIGURAR SESSÃO ***
+                        UserSession.SetFuncionario(funcionario.Id, funcionario.Nome);
 
-                        // Aguarda 1.5 segundos para o usuário ver a mensagem
+                        MostrarSucesso($"Login realizado com sucesso!\n\nBem-vindo, {funcionario.Nome}!");
+
+                        // Aguarda 1.5 segundos para o usuario ver a mensagem
                         await Task.Delay(1500);
 
-                        // Navega para a tela Home
-                        Frame.Navigate(typeof(patrimonioDB.Features.Home.HomeView));
+                        // Navega para o Painel do Funcionario
+                        Frame.Navigate(typeof(patrimonioDB.Features.FuncionarioDashboard.FuncionarioDashboardView));
+
+                        // Configura o nome apos navegar
+                        if (Frame.Content is patrimonioDB.Features.FuncionarioDashboard.FuncionarioDashboardView funcView)
+                        {
+                            funcView.SetFuncionarioNome(funcionario.Nome);
+                        }
                     }
                     else
                     {

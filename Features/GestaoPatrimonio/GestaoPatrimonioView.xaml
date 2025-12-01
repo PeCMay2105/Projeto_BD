@@ -113,28 +113,11 @@ Content="Sair"
             </StackPanel>
             </Grid>
 
-           <!-- Data de Compra e Funcionario Responsavel -->
-          <Grid ColumnSpacing="10">
-        <Grid.ColumnDefinitions>
-             <ColumnDefinition Width="*"/>
-           <ColumnDefinition Width="*"/>
-           </Grid.ColumnDefinitions>
-
-                 <!-- Data de Compra -->
- <StackPanel Grid.Column="0" Spacing="5">
- <TextBlock Text="Data de Compra:" FontWeight="SemiBold"/>
-    <DatePicker x:Name="DataCompraDatePicker"/>
+           <!-- Data de Compra -->
+  <StackPanel Spacing="5">
+        <TextBlock Text="Data de Compra:" FontWeight="SemiBold"/>
+ <DatePicker x:Name="DataCompraDatePicker" HorizontalAlignment="Stretch"/>
        </StackPanel>
-
- <!-- Funcionario Responsavel -->
-          <StackPanel Grid.Column="1" Spacing="5">
-<TextBlock Text="ID Funcionario:" FontWeight="SemiBold"/>
-       <NumberBox x:Name="FuncionarioNumberBox" 
-      Value="1" 
-      Minimum="1"
-   SpinButtonPlacementMode="Inline"/>
-       </StackPanel>
-       </Grid>
 
          <!-- Mensagens de Feedback -->
              <TextBlock x:Name="MensagemErroAdicionar"
@@ -144,15 +127,15 @@ Content="Sair"
 
         <TextBlock x:Name="MensagemSucessoAdicionar"
 Foreground="Green"
-           TextWrapping="Wrap"
+    TextWrapping="Wrap"
     Visibility="Collapsed"/>
 
    <!-- Loading -->
    <ProgressRing x:Name="LoadingRingAdicionar"
-          IsActive="False"
+     IsActive="False"
        Visibility="Collapsed"
         Width="40"
-                  Height="40"
+          Height="40"
             HorizontalAlignment="Center"/>
 
        <!-- Botao Adicionar -->
@@ -172,135 +155,271 @@ Foreground="Green"
 
 <!-- Lista de Itens -->
      <StackPanel Spacing="5">
-         <TextBlock Text="Selecione o item a mover:" FontWeight="SemiBold" FontSize="16"/>
-             <TextBox x:Name="BuscarMoverTextBox" 
+     <TextBlock Text="Selecione o item a mover:" FontWeight="SemiBold" FontSize="16"/>
+    <TextBox x:Name="BuscarMoverTextBox" 
       PlaceholderText="Buscar por nome..."
-            TextChanged="BuscarMover_TextChanged"/>
-         </StackPanel>
+        TextChanged="BuscarMover_TextChanged"/>
+    </StackPanel>
 
-               <ListView x:Name="ItensMoverListView"
-     Height="300"
-     SelectionMode="Single"
+       <ListView x:Name="ItensMoverListView"
+  Height="250"
+ SelectionMode="Single"
        SelectionChanged="ItensMoverListView_SelectionChanged">
           <ListView.ItemTemplate>
  <DataTemplate>
         <StackPanel Padding="10">
         <TextBlock Text="{Binding Nome}" FontWeight="Bold"/>
-             <TextBlock Text="{Binding NomeSetor}" FontSize="12" Foreground="Gray"/>
+       <TextBlock Text="{Binding NomeSetor}" FontSize="12" Foreground="Gray"/>
     <TextBlock>
-<Run Text="Qtd: "/>
-        <Run Text="{Binding Quantidade}"/>
- <Run Text=" | Valor: R$ "/>
-    <Run Text="{Binding ValorTotal}"/>
+<Run Text="Qtd Disponível: "/>
+  <Run Text="{Binding QuantidadeTotal}"/>
+ <Run Text=" | Valor Médio: R$ "/>
+    <Run Text="{Binding ValorUnitarioMedio}"/>
      </TextBlock>
-         </StackPanel>
-        </DataTemplate>
-           </ListView.ItemTemplate>
-           </ListView>
+      </StackPanel>
+  </DataTemplate>
+     </ListView.ItemTemplate>
+    </ListView>
 
-     <!-- Novo Setor -->
-            <StackPanel Spacing="5">
-           <TextBlock Text="Mover para o setor:" FontWeight="SemiBold"/>
-        <ComboBox x:Name="NovoSetorComboBox" 
-         PlaceholderText="Selecione o novo setor"
+<!-- Quantidade a Mover -->
+     <StackPanel Spacing="5">
+<TextBlock Text="Quantidade a mover:" FontWeight="SemiBold"/>
+<NumberBox x:Name="QuantidadeMoverNumberBox" 
+ Value="1" 
+           Minimum="1"
+    SpinButtonPlacementMode="Inline"
+  HorizontalAlignment="Stretch"/>
+</StackPanel>
+
+  <!-- Novo Setor -->
+     <StackPanel Spacing="5">
+       <TextBlock Text="Mover para o setor:" FontWeight="SemiBold"/>
+      <ComboBox x:Name="NovoSetorComboBox" 
+    PlaceholderText="Selecione o novo setor"
       HorizontalAlignment="Stretch"
-                  DisplayMemberPath="Nome"
+  DisplayMemberPath="Nome"
 SelectedValuePath="Id"/>
       </StackPanel>
 
 <!-- Mensagens -->
-            <TextBlock x:Name="MensagemErroMover"
-                 Foreground="Red"
+   <TextBlock x:Name="MensagemErroMover"
+      Foreground="Red"
      TextWrapping="Wrap"
                  Visibility="Collapsed"/>
 
-     <TextBlock x:Name="MensagemSucessoMover"
+  <TextBlock x:Name="MensagemSucessoMover"
      Foreground="Green"
              TextWrapping="Wrap"
-                Visibility="Collapsed"/>
+           Visibility="Collapsed"/>
 
-       <!-- Loading -->
+    <!-- Loading -->
  <ProgressRing x:Name="LoadingRingMover"
-      IsActive="False"
+  IsActive="False"
           Visibility="Collapsed"
    Width="40"
        Height="40"
   HorizontalAlignment="Center"/>
 
-             <!-- Botao Mover -->
-             <Button x:Name="MoverButton"
-            Content="Mover Item" 
-     Click="MoverButton_Click"
-          HorizontalAlignment="Stretch"
+  <!-- Botao Mover -->
+       <Button x:Name="MoverButton"
+  Content="Mover Item" 
+ Click="MoverButton_Click"
+ HorizontalAlignment="Stretch"
    Style="{StaticResource AccentButtonStyle}"
-         IsEnabled="False"/>
+IsEnabled="False"/>
 
-          </StackPanel>
-          </TabViewItem>
+   </StackPanel>
+    </TabViewItem>
 
-    <!-- ===== ABA 3: REMOVER ITEM ===== -->
-         <TabViewItem Header="Remover Item">
+    <!-- ===== ABA 3: VENDER ITEM ===== -->
+     <TabViewItem Header="Vender Item">
 <StackPanel Padding="20" Spacing="15">
 
-    <!-- Lista de Itens Ativos -->
-   <StackPanel Spacing="5">
-<TextBlock Text="Selecione o item a remover:" FontWeight="SemiBold" FontSize="16"/>
+    <!-- Aviso Importante -->
+     <Border 
+   Background="{ThemeResource SystemFillColorAttentionBackgroundBrush}"
+ BorderBrush="{ThemeResource SystemFillColorAttentionBrush}"
+ BorderThickness="1"
+      CornerRadius="4"
+  Padding="10"
+   Margin="0,0,0,10">
+     <StackPanel Spacing="5">
+ <TextBlock Text="?? Importante" FontWeight="Bold"/>
+ <TextBlock Text="Remover um item registra uma VENDA no sistema. Você pode escolher a quantidade. O item permanece no histórico do banco de dados."
+           TextWrapping="Wrap"
+ FontSize="12"/>
+     </StackPanel>
+ </Border>
+
+  <!-- Lista de Itens Ativos -->
+ <StackPanel Spacing="5">
+<TextBlock Text="Selecione o item a vender:" FontWeight="SemiBold" FontSize="16"/>
      <TextBox x:Name="BuscarRemoverTextBox" 
-        PlaceholderText="Buscar por nome..."
+ PlaceholderText="Buscar por nome..."
    TextChanged="BuscarRemover_TextChanged"/>
+  </StackPanel>
+
+   <ListView x:Name="ItensRemoverListView"
+ Height="250"
+SelectionMode="Single"
+  SelectionChanged="ItensRemoverListView_SelectionChanged">
+  <ListView.ItemTemplate>
+  <DataTemplate>
+ <StackPanel Padding="10">
+ <TextBlock Text="{Binding Nome}" FontWeight="Bold"/>
+  <TextBlock Text="{Binding NomeSetor}" FontSize="12" Foreground="Gray"/>
+  <TextBlock>
+      <Run Text="Estoque: "/>
+ <Run Text="{Binding QuantidadeTotal}" FontWeight="SemiBold" Foreground="Green"/>
+  <Run Text=" unidades | Preço Médio: R$ "/>
+    <Run Text="{Binding ValorUnitarioMedio}"/>
+</TextBlock>
+  </StackPanel>
+       </DataTemplate>
+  </ListView.ItemTemplate>
+   </ListView>
+
+    <!-- Quantidade a Vender -->
+    <StackPanel Spacing="5">
+  <TextBlock Text="Quantidade a vender:" FontWeight="SemiBold"/>
+        <NumberBox x:Name="QuantidadeVenderNumberBox" 
+       Value="1" 
+ Minimum="1"
+  SpinButtonPlacementMode="Inline"
+         HorizontalAlignment="Stretch"
+         PlaceholderText="Quantidade a vender"/>
     </StackPanel>
 
-     <ListView x:Name="ItensRemoverListView"
-      Height="350"
-       SelectionMode="Single"
-            SelectionChanged="ItensRemoverListView_SelectionChanged">
-  <ListView.ItemTemplate>
-     <DataTemplate>
- <StackPanel Padding="10">
-         <TextBlock Text="{Binding Nome}" FontWeight="Bold"/>
-              <TextBlock Text="{Binding NomeSetor}" FontSize="12" Foreground="Gray"/>
-      <TextBlock>
-        <Run Text="Qtd: "/>
-             <Run Text="{Binding Quantidade}"/>
-    <Run Text=" | Compra: "/>
-         <Run Text="{Binding DataCompra}"/>
-             </TextBlock>
-             </StackPanel>
-         </DataTemplate>
-             </ListView.ItemTemplate>
-       </ListView>
-
-        <!-- Mensagens -->
+    <!-- Mensagens -->
      <TextBlock x:Name="MensagemErroRemover"
    Foreground="Red"
-             TextWrapping="Wrap"
+    TextWrapping="Wrap"
  Visibility="Collapsed"/>
 
-  <TextBlock x:Name="MensagemSucessoRemover"
+<TextBlock x:Name="MensagemSucessoRemover"
     Foreground="Green"
-        TextWrapping="Wrap"
-            Visibility="Collapsed"/>
+      TextWrapping="Wrap"
+   Visibility="Collapsed"/>
 
-                <!-- Loading -->
+   <!-- Loading -->
     <ProgressRing x:Name="LoadingRingRemover"
-         IsActive="False"
-             Visibility="Collapsed"
+   IsActive="False"
+ Visibility="Collapsed"
    Width="40"
-        Height="40"
+     Height="40"
     HorizontalAlignment="Center"/>
 
-           <!-- Botao Remover -->
-            <Button x:Name="RemoverButton"
-   Content="Remover Item" 
-         Click="RemoverButton_Click"
-              HorizontalAlignment="Stretch"
-      Background="Red"
+  <!-- Botao Vender -->
+     <Button x:Name="RemoverButton"
+   Content="Vender Item (Remover do Estoque)" 
+  Click="RemoverButton_Click"
+     HorizontalAlignment="Stretch"
+ Background="Red"
     IsEnabled="False"/>
 
-         </StackPanel>
+ </StackPanel>
          </TabViewItem>
 
+        <!-- ===== ABA 4: RECOMPRAR ITEM ===== -->
+         <TabViewItem Header="Recomprar Item">
+          <ScrollViewer>
+<StackPanel Padding="20" Spacing="15" MaxWidth="600">
+
+      <!-- Aviso -->
+   <Border 
+    Background="{ThemeResource SystemFillColorSuccessBackgroundBrush}"
+         BorderBrush="{ThemeResource SystemFillColorSuccessBrush}"
+  BorderThickness="1"
+       CornerRadius="4"
+   Padding="10"
+    Margin="0,0,0,10">
+     <StackPanel Spacing="5">
+    <TextBlock Text="?? Dica" FontWeight="Bold"/>
+   <TextBlock Text="Recomprar incrementa o estoque de um item existente. Útil quando você compra mais unidades de algo que já possui."
+ TextWrapping="Wrap"
+   FontSize="12"/>
+        </StackPanel>
+ </Border>
+
+    <!-- Buscar Item -->
+      <StackPanel Spacing="5">
+  <TextBlock Text="Buscar item para recomprar:" FontWeight="SemiBold" FontSize="16"/>
+    <TextBox x:Name="BuscarRecompraTextBox" 
+      PlaceholderText="Buscar por nome..."
+   TextChanged="BuscarRecompra_TextChanged"/>
+     </StackPanel>
+
+     <!-- Lista de Itens -->
+  <ListView x:Name="ItensRecompraListView"
+             Height="200"
+     SelectionMode="Single"
+    SelectionChanged="ItensRecompraListView_SelectionChanged">
+            <ListView.ItemTemplate>
+  <DataTemplate>
+  <StackPanel Padding="10">
+    <TextBlock Text="{Binding Nome}" FontWeight="Bold"/>
+     <TextBlock Text="{Binding NomeSetor}" FontSize="12" Foreground="Gray"/>
+        <TextBlock>
+     <Run Text="Estoque atual: "/>
+          <Run Text="{Binding QuantidadeTotal}"/>
+         <Run Text=" | ID: "/>
+        <Run Text="{Binding Id}"/>
+</TextBlock>
+       </StackPanel>
+   </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+
+  <!-- Quantidade -->
+       <StackPanel Spacing="5">
+           <TextBlock Text="Quantidade a comprar:" FontWeight="SemiBold"/>
+       <NumberBox x:Name="QuantidadeRecompraNumberBox" 
+     Value="1" 
+  Minimum="1"
+  SpinButtonPlacementMode="Inline"/>
+        </StackPanel>
+
+         <!-- Preço -->
+    <StackPanel Spacing="5">
+      <TextBlock Text="Preço unitário (R$):" FontWeight="SemiBold"/>
+ <NumberBox x:Name="PrecoRecompraNumberBox" 
+     Value="0" 
+   Minimum="0"
+   SpinButtonPlacementMode="Inline"/>
+       </StackPanel>
+
+  <!-- Mensagens -->
+         <TextBlock x:Name="MensagemErroRecompra"
+    Foreground="Red"
+         TextWrapping="Wrap"
+           Visibility="Collapsed"/>
+
+    <TextBlock x:Name="MensagemSucessoRecompra"
+  Foreground="Green"
+   TextWrapping="Wrap"
+     Visibility="Collapsed"/>
+
+    <!-- Loading -->
+  <ProgressRing x:Name="LoadingRingRecompra"
+    IsActive="False"
+ Visibility="Collapsed"
+    Width="40"
+   Height="40"
+    HorizontalAlignment="Center"/>
+
+     <!-- Botao Recomprar -->
+        <Button x:Name="RecomprarButton"
+ Content="Registrar Recompra" 
+  Click="RecomprarButton_Click"
+       HorizontalAlignment="Stretch"
+      Style="{StaticResource AccentButtonStyle}"
+    IsEnabled="False"/>
+
+</StackPanel>
+     </ScrollViewer>
+   </TabViewItem>
+
  </TabView.TabItems>
-        </TabView>
+      </TabView>
     </Grid>
 </Page>

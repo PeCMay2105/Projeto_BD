@@ -8,7 +8,6 @@ namespace patrimonioDB.Features.GestaoPatrimonio
 {
     /// <summary>
     /// Exceção personalizada para erros de validação de patrimônio
-    /// que podem ser exibidos diretamente para o usuário na UI
     /// </summary>
     public class ValidacaoItemException : Exception
     {
@@ -17,7 +16,6 @@ namespace patrimonioDB.Features.GestaoPatrimonio
 
     /// <summary>
     /// Service contém toda a LÓGICA DE NEGÓCIO da gestão de patrimônio
-    /// Valida regras antes de chamar o Repository
     /// </summary>
     public class ItemService
     {
@@ -30,8 +28,9 @@ namespace patrimonioDB.Features.GestaoPatrimonio
 
         /// <summary>
         /// Adiciona um novo item ao patrimônio com validações de negócio
+        /// Cria o item e registra a compra inicial
         /// </summary>
-        public async Task AdicionarItemAsync(Item item)
+        public async Task AdicionarItemAsync(Item item, double preco, int quantidade, int funcionarioId)
         {
             // ===== VALIDAÇÕES DE NEGÓCIO =====
 
@@ -41,25 +40,19 @@ namespace patrimonioDB.Features.GestaoPatrimonio
                 throw new ValidacaoItemException("O nome do item não pode estar vazio.");
             }
 
-            // 2. Quantidade não pode ser negativa
-            if (item.Quantidade < 0)
+            // 2. Quantidade não pode ser negativa ou zero
+            if (quantidade <= 0)
             {
-                throw new ValidacaoItemException("A quantidade não pode ser negativa.");
+                throw new ValidacaoItemException("A quantidade deve ser maior que zero.");
             }
 
-            // 3. Valor unitário não pode ser negativo
-            if (item.ValorUnitario < 0)
+            // 3. Preço não pode ser negativo
+            if (preco < 0)
             {
-                throw new ValidacaoItemException("O valor unitário não pode ser negativo.");
+                throw new ValidacaoItemException("O preço não pode ser negativo.");
             }
 
-            // 4. Descrição não pode ser vazia
-            if (string.IsNullOrWhiteSpace(item.Descricao))
-            {
-                throw new ValidacaoItemException("A descrição do item não pode estar vazia.");
-            }
-
-            // 5. Validar se o setor existe
+            // 4. Validar se o setor existe
             bool setorExiste = await _repository.SetorExisteAsync(item.Setor_Id);
             if (!setorExiste)
             {
@@ -70,10 +63,12 @@ namespace patrimonioDB.Features.GestaoPatrimonio
 
             try
             {
-                // Se todas as validações passaram, salva no banco
-                await _repository.AdicionarItemAsync(item);
-
-                Debug.WriteLine($"✓ Item '{item.Nome}' adicionado ao setor {item.Setor_Id} com sucesso!");
+                await _repository.AdicionarItemAsync(item, preco, quantidade, funcionarioId);
+                Debug.WriteLine($"✓ Item '{item.Nome}' adicionado com {quantidade} unidades a R$ {preco:F2}");
+            }
+            catch (ValidacaoItemException)
+            {
+                throw; // Re-lança exceções de validação
             }
             catch (Exception ex)
             {
@@ -83,52 +78,126 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
-        /// Move um item de um setor para outro com validações
+        /// Registra uma nova compra de um item existente
         /// </summary>
-        public async Task MoverItemAsync(int itemId, int novoSetorId)
+        public async Task RegistrarCompraAsync(int idItem, double preco, int quantidade, int funcionarioId)
         {
-            // ===== VALIDAÇÕES DE NEGÓCIO =====
+            // Validações
+            if (quantidade <= 0)
+            {
+                throw new ValidacaoItemException("A quantidade deve ser maior que zero.");
+            }
 
-            // 1. Buscar o item
-            var item = await _repository.BuscarPorIdAsync(itemId);
+            if (preco < 0)
+            {
+                throw new ValidacaoItemException("O preço não pode ser negativo.");
+            }
 
-            // 2. Verificar se o item existe
+            // Verificar se o item existe
+            var item = await _repository.BuscarPorIdAsync(idItem);
             if (item == null)
             {
                 throw new ValidacaoItemException("Item não encontrado.");
             }
 
-            // 3. Verificar se o item já foi removido
-            if (item.DataRemocao != null)
+            try
             {
-                throw new ValidacaoItemException($"Não é possível mover um item que foi removido em {item.DataRemocao:dd/MM/yyyy}.");
+                await _repository.RegistrarCompraAsync(idItem, preco, quantidade, funcionarioId);
+                Debug.WriteLine($"✓ Compra registrada: {quantidade}x {item.Nome} a R$ {preco:F2}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERRO AO REGISTRAR COMPRA: {ex.Message}");
+                throw new Exception("Erro ao registrar compra. Tente novamente.");
+            }
+        }
+
+        /// <summary>
+        /// Registra uma venda de um item
+        /// </summary>
+        public async Task RegistrarVendaAsync(int idItem, double preco, int quantidade, int funcionarioId)
+        {
+            // Validações
+            if (quantidade <= 0)
+            {
+                throw new ValidacaoItemException("A quantidade deve ser maior que zero.");
             }
 
-            // 4. Verificar se não está tentando mover para o mesmo setor
+            if (preco < 0)
+            {
+                throw new ValidacaoItemException("O preço não pode ser negativo.");
+            }
+
+            // Verificar se o item existe e tem estoque suficiente
+            var item = await _repository.BuscarPorIdAsync(idItem);
+            if (item == null)
+            {
+                throw new ValidacaoItemException("Item não encontrado.");
+            }
+
+            if (item.QuantidadeTotal < quantidade)
+            {
+                throw new ValidacaoItemException($"Estoque insuficiente. Disponível: {item.QuantidadeTotal} unidades.");
+            }
+
+            try
+            {
+                await _repository.RegistrarVendaAsync(idItem, preco, quantidade, funcionarioId);
+                Debug.WriteLine($"✓ Venda registrada: {quantidade}x {item.Nome} a R$ {preco:F2}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERRO AO REGISTRAR VENDA: {ex.Message}");
+                throw new Exception("Erro ao registrar venda. Tente novamente.");
+            }
+        }
+
+        /// <summary>
+        /// Move um item de um setor para outro com validações
+        /// Registra a movimentação na tabela movimentacao
+        /// </summary>
+        public async Task MoverItemAsync(int itemId, int novoSetorId, int quantidade, int funcionarioId)
+        {
+            // Buscar o item
+            var item = await _repository.BuscarPorIdAsync(itemId);
+            if (item == null)
+            {
+                throw new ValidacaoItemException("Item não encontrado.");
+            }
+
+            // Verificar se não está tentando mover para o mesmo setor
             if (item.Setor_Id == novoSetorId)
             {
                 string nomeSetor = await _repository.BuscarNomeSetorAsync(item.Setor_Id);
                 throw new ValidacaoItemException($"O item já está no setor '{nomeSetor}'.");
             }
-            // 5. Validar se o setor destino existe
+
+            // Validar se o setor destino existe
             bool setorExiste = await _repository.SetorExisteAsync(novoSetorId);
             if (!setorExiste)
             {
                 throw new ValidacaoItemException("O setor de destino não existe.");
             }
 
-            // ===== FIM DAS VALIDAÇÕES =====
+            // Validar quantidade
+            if (quantidade <= 0)
+            {
+                throw new ValidacaoItemException("A quantidade deve ser maior que zero.");
+            }
+
+            if (quantidade > item.QuantidadeTotal)
+            {
+                throw new ValidacaoItemException($"Quantidade inválida. Disponível: {item.QuantidadeTotal} unidades.");
+            }
 
             try
             {
-                // Buscar nome do setor antes de mover
                 string setorAnterior = await _repository.BuscarNomeSetorAsync(item.Setor_Id);
                 string setorNovo = await _repository.BuscarNomeSetorAsync(novoSetorId);
 
-                // Move o item
-                await _repository.MoverItemAsync(itemId, novoSetorId);
-
-                Debug.WriteLine($"✓ Item '{item.Nome}' movido de '{setorAnterior}' para '{setorNovo}'");
+                // Passar setorOrigemId, setorDestinoId, quantidade e funcionarioId
+                await _repository.MoverItemAsync(itemId, item.Setor_Id, novoSetorId, quantidade, funcionarioId);
+                Debug.WriteLine($"✓ Item '{item.Nome}' ({quantidade} unidades) movido de '{setorAnterior}' para '{setorNovo}'");
             }
             catch (Exception ex)
             {
@@ -138,37 +207,40 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         }
 
         /// <summary>
-        /// Remove logicamente um item (preenche data_remocao)
+        /// Remove (vende) uma quantidade específica de um item
+        /// IMPORTANTE: O item NÃO é deletado do banco de dados!
+        /// Apenas registra uma venda com a quantidade especificada
         /// </summary>
-        public async Task RemoverItemAsync(int itemId)
+        public async Task RemoverItemAsync(int itemId, int quantidade, int funcionarioId)
         {
-            // ===== VALIDAÇÕES DE NEGÓCIO =====
-
-            // 1. Buscar o item
             var item = await _repository.BuscarPorIdAsync(itemId);
-
-            // 2. Verificar se o item existe
             if (item == null)
             {
                 throw new ValidacaoItemException("Item não encontrado.");
             }
 
-            // 3. Verificar se já não foi removido antes
-            if (item.DataRemocao != null)
+            // Validar quantidade
+            if (quantidade <= 0)
             {
-                throw new ValidacaoItemException($"Este item já foi removido em {item.DataRemocao:dd/MM/yyyy}.");
+                throw new ValidacaoItemException("A quantidade deve ser maior que zero.");
             }
 
-            // ===== FIM DAS VALIDAÇÕES =====
+            // Verificar se há estoque suficiente
+            if (item.QuantidadeTotal <= 0)
+            {
+                throw new ValidacaoItemException($"Não há estoque disponível de '{item.Nome}' para vender.");
+            }
+
+            if (item.QuantidadeTotal < quantidade)
+            {
+                throw new ValidacaoItemException($"Estoque insuficiente. Disponível: {item.QuantidadeTotal} unidades.");
+            }
+
             try
             {
-                // Buscar nome do setor antes de remover
                 string nomeSetor = await _repository.BuscarNomeSetorAsync(item.Setor_Id);
-
-                // Remove o item
-                await _repository.RemoverItemAsync(itemId);
-
-                Debug.WriteLine($"✓ Item '{item.Nome}' removido do setor '{nomeSetor}' em {DateTime.Now:dd/MM/yyyy}");
+                await _repository.RemoverItemAsync(itemId, quantidade, funcionarioId);
+                Debug.WriteLine($"✓ Vendidas {quantidade} unidade(s) de '{item.Nome}'");
             }
             catch (Exception ex)
             {
@@ -184,7 +256,7 @@ namespace patrimonioDB.Features.GestaoPatrimonio
         {
             try
             {
-                return await _repository.ListarItensAsync(incluirRemovidos);
+                return await _repository.ListarItensAsync();
             }
             catch (Exception ex)
             {
@@ -222,6 +294,54 @@ namespace patrimonioDB.Features.GestaoPatrimonio
             {
                 Debug.WriteLine($"ERRO AO BUSCAR ITEM: {ex.Message}");
                 throw new Exception("Erro ao buscar item. Tente novamente.");
+            }
+        }
+
+        /// <summary>
+        /// Lista o histórico de compras de um item
+        /// </summary>
+        public async Task<List<Compra>> ListarComprasDoItemAsync(int idItem)
+        {
+            try
+            {
+                return await _repository.ListarComprasDoItemAsync(idItem);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERRO AO LISTAR COMPRAS: {ex.Message}");
+                throw new Exception("Erro ao buscar histórico de compras.");
+            }
+        }
+
+        /// <summary>
+        /// Lista o histórico de vendas de um item
+        /// </summary>
+        public async Task<List<Venda>> ListarVendasDoItemAsync(int idItem)
+        {
+            try
+            {
+                return await _repository.ListarVendasDoItemAsync(idItem);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERRO AO LISTAR VENDAS: {ex.Message}");
+                throw new Exception("Erro ao buscar histórico de vendas.");
+            }
+        }
+
+        /// <summary>
+        /// Lista o histórico de movimentações de um item
+        /// </summary>
+        public async Task<List<Movimentacao>> ListarMovimentacoesDoItemAsync(int idItem)
+        {
+            try
+            {
+                return await _repository.ListarMovimentacoesDoItemAsync(idItem);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERRO AO LISTAR MOVIMENTAÇÕES: {ex.Message}");
+                throw new Exception("Erro ao buscar histórico de movimentações.");
             }
         }
     }
