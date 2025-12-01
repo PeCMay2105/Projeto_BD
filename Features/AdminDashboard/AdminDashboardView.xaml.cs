@@ -69,5 +69,14 @@ namespace patrimonioDB.Features.AdminDashboard
         {
             Frame.Navigate(typeof(patrimonioDB.Features.PdfFuncionario.GerarPdfFuncionariosView));
         }
+
+        /// <summary>
+        /// ? NOVO: Navega para a tela de Visualizar PDFs Salvos
+        /// Disponível apenas para administrador
+        /// </summary>
+        private void VisualizarPdfsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(patrimonioDB.Features.PdfFuncionario.VisualizarPdfsView));
+        }
     }
 }

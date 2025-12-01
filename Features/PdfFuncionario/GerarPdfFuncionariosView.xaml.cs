@@ -70,7 +70,7 @@ namespace patrimonioDB.Features.PdfFuncionario
         /// <summary>
         /// Gera o PDF com os dados carregados
         /// </summary>
-        private void GerarPdfButton_Click(object sender, RoutedEventArgs e)
+        private async void GerarPdfButton_Click(object sender, RoutedEventArgs e)
         {
             if (_funcionarios == null || _funcionarios.Count == 0)
             {
@@ -87,29 +87,14 @@ namespace patrimonioDB.Features.PdfFuncionario
 
             try
             {
-                // Definir caminho do arquivo
-                string pastaDownloads = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads";
+                // Definir nome do arquivo
                 string nomeArquivo = $"funcionarios_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
-                string caminhoCompleto = Path.Combine(pastaDownloads, nomeArquivo);
+                bool porSetor = RadioPorSetor.IsChecked == true;
 
-                // Gerar PDF baseado no tipo selecionado
-                if (RadioTabela.IsChecked == true)
-                {
-                    _pdfService.GerarPdfFuncionarios(_funcionarios, caminhoCompleto);
-                }
-                else if (RadioPorSetor.IsChecked == true)
-                {
-                    _pdfService.GerarPdfPorSetor(_funcionarios, caminhoCompleto);
-                }
+                // ✅ NOVO: Salvar no banco de dados
+                int documentoId = await _pdfService.GerarESalvarPdfAsync(_funcionarios, nomeArquivo, porSetor);
 
-                MostrarSucesso($"✓ PDF gerado com sucesso!\n📁 {caminhoCompleto}");
-
-                // Abrir o PDF automaticamente
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = caminhoCompleto,
-                    UseShellExecute = true
-                });
+                MostrarSucesso($"✓ PDF gerado e salvo no banco com sucesso!\n📄 ID do documento: {documentoId}");
             }
             catch (Exception ex)
             {

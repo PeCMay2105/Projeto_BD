@@ -82,42 +82,54 @@
         <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
+          <Grid.RowDefinitions>
        <RowDefinition Height="Auto"/>
-             <RowDefinition Height="Auto"/>
+   <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
 
       <Button 
  Grid.Column="0"
-          Grid.Row="0"
+ Grid.Row="0"
   x:Name="CadastrarFuncionarioButton"
-        Content="Cadastrar Funcionario"
+ Content="Cadastrar Funcionario"
    Click="CadastrarFuncionarioButton_Click"
      HorizontalAlignment="Stretch"
      Height="50"
-      Style="{StaticResource AccentButtonStyle}"/>
+   Style="{StaticResource AccentButtonStyle}"/>
 
      <Button 
      Grid.Column="1"
-            Grid.Row="0"
+  Grid.Row="0"
    x:Name="EditarFuncionarioButton"
           Content="Gerenciar Funcionarios"
  Click="EditarFuncionarioButton_Click"
         HorizontalAlignment="Stretch"
       Height="50"/>
 
-       <!-- ✅ NOVO: Botão Gerar PDF -->
+   <!-- Botão Gerar PDF -->
   <Button 
          Grid.Column="0"
        Grid.Row="1"
-          Grid.ColumnSpan="2"
-             x:Name="GerarPdfButton"
-     Content="📄 Gerar Relatório PDF de Funcionários"
+         x:Name="GerarPdfButton"
+   Content="Gerar Relatório PDF"
   Click="GerarPdfButton_Click"
        HorizontalAlignment="Stretch"
          Height="50"
 Background="#0078D4"
-            Foreground="White"/>
+ Foreground="White"/>
+
+            <!-- Botão Visualizar PDFs -->
+          <Button 
+      Grid.Column="1"
+  Grid.Row="1"
+       x:Name="VisualizarPdfsButton"
+      Content="Visualizar PDFs Salvos"
+        Click="VisualizarPdfsButton_Click"
+      HorizontalAlignment="Stretch"
+   Height="50"
+       Background="#2E7D32"
+   Foreground="White"/>
 </Grid>
         </StackPanel>
        </Border>

@@ -11,6 +11,7 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
+    <CsWinRTEnabled>true</CsWinRTEnabled>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -41,6 +42,20 @@
     <PackageReference Include="Npgsql" Version="9.0.4" />
     <PackageReference Include="QuestPDF" Version="2025.7.4" />
     <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.7.0" />
+    <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Features\PdfFuncionario\VisualizarPdfsView.xaml.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Features\PdfFuncionario\VisualizarPdfsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +64,7 @@
     </Page>
     <Page Update="Features\AdminDashboard\AdminDashboardView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
     <Page Update="Features\FuncionarioDashboard\FuncionarioDashboardView.xaml">
       <Generator>MSBuild:Compile</Generator>

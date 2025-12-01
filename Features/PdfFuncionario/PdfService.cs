@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace patrimonioDB.Features.PdfFuncionario
 {
@@ -14,6 +15,13 @@ namespace patrimonioDB.Features.PdfFuncionario
     /// </summary>
     public class PdfService
     {
+        private readonly DocumentoRepository _documentoRepository;
+
+        public PdfService()
+        {
+            _documentoRepository = new DocumentoRepository();
+        }
+
         /// <summary>
         /// Gera um PDF com a lista de funcionários
         /// </summary>
@@ -131,6 +139,44 @@ namespace patrimonioDB.Features.PdfFuncionario
             {
                 Debug.WriteLine($"ERRO ao gerar PDF: {ex.Message}");
                 throw new Exception($"Erro ao gerar PDF: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// ✅ NOVO: Gera PDF e salva no banco de dados
+        /// </summary>
+        public async Task<int> GerarESalvarPdfAsync(List<FuncionarioDetalhado> funcionarios, string nomeArquivo, bool porSetor = false)
+        {
+            try
+            {
+                // Gerar PDF em memória (temporário)
+                string tempPath = Path.GetTempFileName();
+      
+                if (porSetor)
+                {
+                     GerarPdfPorSetor(funcionarios, tempPath);
+                }
+                else
+                {
+                     GerarPdfFuncionarios(funcionarios, tempPath);
+                }
+
+                // Salvar no banco de dados
+                int documentoId = await _documentoRepository.SalvarPdfAsync(nomeArquivo, tempPath);
+
+                // Deletar arquivo temporário
+                if (File.Exists(tempPath))
+                {
+                    File.Delete(tempPath);
+                }
+
+                Debug.WriteLine($"✓ PDF salvo no banco com ID: {documentoId}");
+                return documentoId;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERRO ao gerar e salvar PDF: {ex.Message}");
+                throw;
             }
         }
 

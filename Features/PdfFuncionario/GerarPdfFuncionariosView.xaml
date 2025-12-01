@@ -24,7 +24,7 @@
             <Button 
           Grid.Column="0"
       x:Name="VoltarButton"
-       Content="← Voltar"
+       Content="Voltar"
       Click="VoltarButton_Click"
     Background="Transparent"
      BorderThickness="0"
@@ -45,8 +45,8 @@
             <!-- Tipo de relatório -->
             <StackPanel Spacing="10">
                 <TextBlock Text="Tipo de Relatório:" FontWeight="SemiBold" FontSize="16"/>
-                <RadioButton x:Name="RadioTabela" Content="📊 Tabela Completa" IsChecked="True"/>
-                <RadioButton x:Name="RadioPorSetor" Content="🏢 Agrupado por Setor"/>
+                <RadioButton x:Name="RadioTabela" Content="Tabela Completa" IsChecked="True"/>
+                <RadioButton x:Name="RadioPorSetor" Content="Agrupado por Setor"/>
             </StackPanel>
 
             <!-- Preview -->
@@ -80,19 +80,19 @@
             <!-- Botões -->
             <StackPanel Spacing="10">
                 <Button x:Name="CarregarButton"
-                        Content="📥 Carregar Dados" 
+                        Content="Carregar Dados" 
                         Click="CarregarButton_Click"
                         HorizontalAlignment="Stretch"
                         Style="{StaticResource AccentButtonStyle}"/>
 
                 <Button x:Name="GerarPdfButton"
-                        Content="📄 Gerar PDF" 
+                        Content="Gerar PDF" 
                         Click="GerarPdfButton_Click"
                         HorizontalAlignment="Stretch"
                         IsEnabled="False"/>
 
                 <Button x:Name="AbrirPastaButton"
-                        Content="📂 Abrir Pasta de Downloads" 
+                        Content="Abrir Pasta de Downloads" 
                         Click="AbrirPastaButton_Click"
                         HorizontalAlignment="Stretch"/>
             </StackPanel>
@@ -101,7 +101,7 @@
             <TextBlock TextWrapping="Wrap" 
                        Foreground="Gray" 
                        FontSize="12">
-                <Run Text="ℹ️ O PDF será salvo na pasta Downloads com o nome:"/>
+                <Run Text="O PDF será salvo na pasta Downloads com o nome:"/>
                 <LineBreak/>
                 <Run Text="funcionarios_[data].pdf" FontStyle="Italic"/>
             </TextBlock>
