@@ -14,8 +14,8 @@ namespace patrimonioDB.Features.Login
                 using (var connection = DatabaseConnection.GetConnection())
                 {
                     string sql = @"
-                      SELECT p.id, p.nome, p.login, p.senha, u.data_admissao, u.setor_id, u.salario, u.cargo
-                       FROM usuario u 
+                      SELECT p.id, p.nome, p.login, p.senha, u.data_admissao, u.id_setor, u.salario, u.id_funcao
+                       FROM funcionario u 
                           INNER JOIN pessoa p ON u.id_pessoa = p.id 
                         WHERE p.login = @login";
 

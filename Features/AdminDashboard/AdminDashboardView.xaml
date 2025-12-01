@@ -89,13 +89,6 @@ Grid.Column="1"
                 Content="Editar"
          Click="EditarFuncionarioButton_Click"
        HorizontalAlignment="Stretch"/>
-
- <Button 
-    Grid.Column="2"
-        x:Name="RemoverFuncionarioButton"
-              Content="Remover"
-       Click="RemoverFuncionarioButton_Click"
-         HorizontalAlignment="Stretch"/>
         </Grid>
  </StackPanel>
                 </Border>

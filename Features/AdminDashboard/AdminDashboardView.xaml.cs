@@ -42,14 +42,6 @@ namespace patrimonioDB.Features.AdminDashboard
       Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.GestaoFuncionariosView));
         }
 
-        /// <summary>
-        /// Navega para a tela de Remover Funcionário
-     /// </summary>
-        private void RemoverFuncionarioButton_Click(object sender, RoutedEventArgs e)
-        {
-   Frame.Navigate(typeof(patrimonioDB.Features.GestaoFuncionarios.GestaoFuncionariosView));
-        }
-
     /// <summary>
     /// Navega para a Gestão de Patrimônio
         /// </summary>
